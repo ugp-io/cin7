@@ -233,13 +233,13 @@ type BrowseProductRequest struct {
 	Name                 *string
 	Sku                  *string
 	ModifiedSince        *string
-	IncludeDeprecated    *bool
-	IncludeBOM           *bool
-	IncludeSuppliers     *bool
-	IncludeMovements     *bool
-	IncludeAttachments   *bool
-	IncludeReorderLevels *bool
-	IncludeCustomPrices  *bool
+	IncludeDeprecated    *string
+	IncludeBOM           *string
+	IncludeSuppliers     *string
+	IncludeMovements     *string
+	IncludeAttachments   *string
+	IncludeReorderLevels *string
+	IncludeCustomPrices  *string
 }
 
 type BrowseProductAvailabilityRequest struct {
@@ -253,34 +253,49 @@ type BrowseProductAvailabilityRequest struct {
 	Category *string
 }
 
+type BrowsePurchaseRequest struct {
+	Page                  *string
+	Limit                 *string
+	Search                *string
+	RequiredBy            *string
+	UpdatedSince          *string
+	OrderStatus           *string
+	RestockReceivedStatus *string
+	InvoiceStatus         *string
+	CreditNoteStatus      *string
+	UnstockStatus         *string
+	Status                *string
+	DropShipTaskID        *string
+}
+
 type ReadPurchaseRequest struct {
 	ID                       string
-	CombineAdditionalCharges *bool
+	CombineAdditionalCharges *string
 }
 
 type ReadPurchaseOrderRequest struct {
 	TaskID                   string
-	CombineAdditionalCharges *bool
+	CombineAdditionalCharges *string
 }
 
 type ReadSaleRequest struct {
 	ID                       string
-	CombineAdditionalCharges *bool
-	HideInventoryMovements   *bool
-	IncludeTransactions      *bool
+	CombineAdditionalCharges *string
+	HideInventoryMovements   *string
+	IncludeTransactions      *string
 	CountryFormat            *string
 }
 
 type ReadSaleOrderRequest struct {
 	SaleID                   string
-	CombineAdditionalCharges *bool
-	IncludeProductInfo       *bool
+	CombineAdditionalCharges *string
+	IncludeProductInfo       *string
 }
 
 type ReadSaleQuoteRequest struct {
 	SaleID                   string
-	CombineAdditionalCharges *bool
-	IncludeProductInfo       *bool
+	CombineAdditionalCharges *string
+	IncludeProductInfo       *string
 }
 
 //////////////////////////////////////////
@@ -294,9 +309,15 @@ type ProductResponse struct {
 }
 
 type ProductAvailabilityResponse struct {
-	Total               *int                   `json:"Total"`
-	Page                *int                   `json:"Page"`
-	ProductAvailability []*ProductAvailability `json:"ProductAvailabilityList"`
+	Total                 *int                   `json:"Total"`
+	Page                  *int                   `json:"Page"`
+	ProductAvailabilities []*ProductAvailability `json:"ProductAvailabilityList"`
+}
+
+type PurchaseListResponse struct {
+	Total     *int            `json:"Total"`
+	Page      *int            `json:"Page"`
+	Purchases []*PurchaseList `json:"PurchaseList"`
 }
 
 type PurchaseResponse struct {
@@ -866,6 +887,37 @@ type SaleTransactionLine struct {
 	Description   *string      `json:"Description"`
 	Amount        *float64     `json:"Amount"`
 	EffectiveDate *ISO8601Time `json:"EffectiveDate"`
+}
+
+type PurchaseList struct {
+	ID                      *string      `json:"ID"`
+	BlindReceipt            *bool        `json:"BlindReceipt"`
+	OrderNumber             *string      `json:"OrderNumber"`
+	Status                  *string      `json:"Status"`
+	OrderDate               *ISO8601Time `json:"OrderDate"`
+	InvoiceDate             *ISO8601Time `json:"InvoiceDate"`
+	Supplier                *string      `json:"Supplier"`
+	SupplierID              *string      `json:"SupplierID"`
+	InvoiceNumber           *string      `json:"InvoiceNumber"`
+	InvoiceAmount           *float64     `json:"InvoiceAmount"`
+	PaidAmount              *float64     `json:"PaidAmount"`
+	InvoiceDueDate          *ISO8601Time `json:"InvoiceDueDate"`
+	RequiredBy              *ISO8601Time `json:"RequiredBy"`
+	BaseCurrency            *string      `json:"BaseCurrency"`
+	SupplierCurrency        *string      `json:"SupplierCurrency"`
+	CreditNoteNumber        *string      `json:"CreditNoteNumber"`
+	OrderStatus             *string      `json:"OrderStatus"`
+	StockReceivedStatus     *string      `json:"StockReceivedStatus"`
+	UnstockStatus           *string      `json:"UnstockStatus"`
+	InvoiceStatus           *string      `json:"InvoiceStatus"`
+	CreditNoteStatus        *string      `json:"CreditNoteStatus"`
+	LastUpdatedDate         *ISO8601Time `json:"LastUpdatedDate"`
+	CombinedReceivingStatus *string      `json:"CombinedReceivingStatus"`
+	CombinedInvoiceStatus   *string      `json:"CombinedInvoiceStatus"`
+	CombinedPaymentStatus   *string      `json:"CombinedPaymentStatus"`
+	Type                    *string      `json:"Type"`
+	IsServiceOnly           *bool        `json:"IsServiceOnly"`
+	DropShipTaskID          *string      `json:"DropShipTaskID"`
 }
 
 type PurchaseOrder struct {

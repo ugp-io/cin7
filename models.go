@@ -562,7 +562,7 @@ type Product struct {
 	AdditionalAttribute8         *string                         `json:"AdditionalAttribute8,omitempty"`
 	AdditionalAttribute9         *string                         `json:"AdditionalAttribute9,omitempty"`
 	AdditionalAttribute10        *string                         `json:"AdditionalAttribute10,omitempty"`
-	AlwaysShowQuantity           *string                         `json:"AlwaysShowQuantity,omitempty"`
+	AlwaysShowQuantity           *float64                        `json:"AlwaysShowQuantity,omitempty"`
 	BOMType                      *string                         `json:"BOMType,omitempty"`
 	WarrantyName                 *string                         `json:"WarrantyName,omitempty"`
 	AttributeSet                 *string                         `json:"AttributeSet,omitempty"`

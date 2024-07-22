@@ -222,6 +222,26 @@ type CreateSaleQuote struct {
 	AdditionalCharges        *[]SaleAdditionalCharge
 }
 
+type CreateStockAdjustment struct {
+	EffectiveDate *ISO8601Time
+	Status        *string
+	TaskID        *string
+	Account       *string
+	Reference     *string
+	UpdateOnHand  *bool
+	Lines         []StockLine
+}
+
+type CreateStockTake struct {
+	EffectiveDate *ISO8601Time
+	Account       *string
+	LocationID    *string
+	Location      *string
+	Reference     *string
+	Tags          *[]string
+	Categories    *[]IDName
+}
+
 //////////////////////////////////////////
 /*			BROWSE REQUESTS				*/
 //////////////////////////////////////////
@@ -296,6 +316,14 @@ type ReadSaleQuoteRequest struct {
 	SaleID                   string
 	CombineAdditionalCharges *string
 	IncludeProductInfo       *string
+}
+
+type BrowseLocationRequest struct {
+	Page       *string
+	Limit      *string
+	ID         *string
+	Deprecated *string
+	Name       *string
 }
 
 //////////////////////////////////////////
@@ -444,93 +472,131 @@ type SaleQuoteResponse struct {
 	AdditionalCharges        *[]SaleAdditionalCharge `json:"AdditionalCharges,omitempty"`
 }
 
+type StockAdjustmentResponse struct {
+	TaskID             *string                 `json:"TaskID"`
+	EffectiveDate      *ISO8601Time            `json:"EffectiveDate"`
+	StocktakeNumber    *string                 `json:"StocktakeNumber"`
+	Status             *string                 `json:"Status"`
+	Account            *string                 `json:"Account"`
+	Reference          *string                 `json:"Reference"`
+	ExistingStockLines *[]StockLine            `json:"ExistingStockLines"`
+	NewStockLines      *[]StockLine            `json:"NewStockLines"`
+	Transactions       *[]TransactionStockLine `json:"Transactions"`
+}
+
+type StockTakeResponse struct {
+	TaskID                     *string                 `json:"TaskID"`
+	EffectiveDate              *ISO8601Time            `json:"EffectiveDate"`
+	StocktakeNumber            *string                 `json:"StocktakeNumber"`
+	Status                     *string                 `json:"Status"`
+	Account                    *string                 `json:"Account"`
+	LocationID                 *string                 `json:"LocationID"`
+	Location                   *string                 `json:"Location"`
+	Reference                  *string                 `json:"Reference"`
+	Tags                       *[]string               `json:"Tags"`
+	PickZones                  *[]string               `json:"PickZones"`
+	StockLocators              *[]string               `json:"StockLocators"`
+	Categories                 *[]IDName               `json:"Categories"`
+	Brands                     *[]IDName               `json:"Brands"`
+	Bins                       *[]IDName               `json:"Bins"`
+	NonZeroStockOnHandProducts *[]StockLine            `json:"NonZeroStockOnHandProducts"`
+	ZeroStockOnHandProducts    *[]StockLine            `json:"ZeroStockOnHandProducts"`
+	Transactions               *[]TransactionStockLine `json:"Transactions"`
+}
+
+type LocationResponse struct {
+	Total     *int        `json:"Total"`
+	Page      *int        `json:"Page"`
+	Locations []*Location `json:"LocationList"`
+}
+
 //////////////////////////////////////////
 /*			OTHER STRUCTS				*/
 //////////////////////////////////////////
 
 type Product struct {
-	ID                           *string                         `json:"ID"`
-	SKU                          *string                         `json:"SKU"`
-	Name                         *string                         `json:"Name"`
-	Category                     *string                         `json:"Category"`
-	UOM                          *string                         `json:"UOM"`
-	Status                       *string                         `json:"Status"`
-	Type                         *string                         `json:"Type"`
-	CostingMethod                *string                         `json:"CostingMethod"`
-	QuantityToProduce            *float64                        `json:"QuantityToProduce"`
-	AssemblyCostEstimationMethod *string                         `json:"AssemblyCostEstimationMethod"`
-	Brand                        *string                         `json:"Brand"`
-	DropShipMode                 *string                         `json:"DropShipMode"`
-	DefaultLocation              *string                         `json:"DefaultLocation"`
-	Length                       *float64                        `json:"Length"`
-	Width                        *float64                        `json:"Width"`
-	Height                       *float64                        `json:"Height"`
-	Weight                       *float64                        `json:"Weight"`
-	WeightUnits                  *string                         `json:"WeightUnits"`
-	DimensionsUnits              *string                         `json:"DimensionsUnits"`
-	Barcode                      *string                         `json:"Barcode"`
-	MinimumBeforeReorder         *float64                        `json:"MinimumBeforeReorder"`
-	ReorderQuantity              *float64                        `json:"ReorderQuantity"`
-	PriceTier1                   *float64                        `json:"PriceTier1"`
-	PriceTier2                   *float64                        `json:"PriceTier2"`
-	PriceTier3                   *float64                        `json:"PriceTier3"`
-	PriceTier4                   *float64                        `json:"PriceTier4"`
-	PriceTier5                   *float64                        `json:"PriceTier5"`
-	PriceTier6                   *float64                        `json:"PriceTier6"`
-	PriceTier7                   *float64                        `json:"PriceTier7"`
-	PriceTier8                   *float64                        `json:"PriceTier8"`
-	PriceTier9                   *float64                        `json:"PriceTier9"`
-	PriceTier10                  *float64                        `json:"PriceTier10"`
-	PriceTiers                   map[string]*float64             `json:"PriceTiers"`
-	AverageCost                  *float64                        `json:"AverageCost"`
-	ShortDescription             *string                         `json:"ShortDescription"`
-	Description                  *string                         `json:"Description"`
-	InternalNote                 *string                         `json:"InternalNote"`
-	AdditionalAttribute1         *string                         `json:"AdditionalAttribute1"`
-	AdditionalAttribute2         *string                         `json:"AdditionalAttribute2"`
-	AdditionalAttribute3         *string                         `json:"AdditionalAttribute3"`
-	AdditionalAttribute4         *string                         `json:"AdditionalAttribute4"`
-	AdditionalAttribute5         *string                         `json:"AdditionalAttribute5"`
-	AdditionalAttribute6         *string                         `json:"AdditionalAttribute6"`
-	AdditionalAttribute7         *string                         `json:"AdditionalAttribute7"`
-	AdditionalAttribute8         *string                         `json:"AdditionalAttribute8"`
-	AdditionalAttribute9         *string                         `json:"AdditionalAttribute9"`
-	AdditionalAttribute10        *string                         `json:"AdditionalAttribute10"`
-	AlwaysShowQuantity           *string                         `json:"AlwaysShowQuantity"`
-	BOMType                      *string                         `json:"BOMType"`
-	WarrantyName                 *string                         `json:"WarrantyName"`
-	AttributeSet                 *string                         `json:"AttributeSet"`
-	DiscountRule                 *string                         `json:"DiscountRule"`
-	Tags                         *string                         `json:"Tags"`
-	StockLocator                 *string                         `json:"StockLocator"`
-	COGSAccount                  *string                         `json:"COGSAccount"`
-	RevenueAccount               *string                         `json:"RevenueAccount"`
+	ID                           *string                         `json:"ID,omitempty"`
+	SKU                          *string                         `json:"SKU,omitempty"`
+	Name                         *string                         `json:"Name,omitempty"`
+	Category                     *string                         `json:"Category,omitempty"`
+	UOM                          *string                         `json:"UOM,omitempty"`
+	Status                       *string                         `json:"Status,omitempty"`
+	Type                         *string                         `json:"Type,omitempty"`
+	CostingMethod                *string                         `json:"CostingMethod,omitempty"`
+	QuantityToProduce            *float64                        `json:"QuantityToProduce,omitempty"`
+	AssemblyCostEstimationMethod *string                         `json:"AssemblyCostEstimationMethod,omitempty"`
+	Brand                        *string                         `json:"Brand,omitempty"`
+	DropShipMode                 *string                         `json:"DropShipMode,omitempty"`
+	DefaultLocation              *string                         `json:"DefaultLocation,omitempty"`
+	Length                       *float64                        `json:"Length,omitempty"`
+	Width                        *float64                        `json:"Width,omitempty"`
+	Height                       *float64                        `json:"Height,omitempty"`
+	Weight                       *float64                        `json:"Weight,omitempty"`
+	WeightUnits                  *string                         `json:"WeightUnits,omitempty"`
+	DimensionsUnits              *string                         `json:"DimensionsUnits,omitempty"`
+	Barcode                      *string                         `json:"Barcode,omitempty"`
+	MinimumBeforeReorder         *float64                        `json:"MinimumBeforeReorder,omitempty"`
+	ReorderQuantity              *float64                        `json:"ReorderQuantity,omitempty"`
+	PriceTier1                   *float64                        `json:"PriceTier1,omitempty"`
+	PriceTier2                   *float64                        `json:"PriceTier2,omitempty"`
+	PriceTier3                   *float64                        `json:"PriceTier3,omitempty"`
+	PriceTier4                   *float64                        `json:"PriceTier4,omitempty"`
+	PriceTier5                   *float64                        `json:"PriceTier5,omitempty"`
+	PriceTier6                   *float64                        `json:"PriceTier6,omitempty"`
+	PriceTier7                   *float64                        `json:"PriceTier7,omitempty"`
+	PriceTier8                   *float64                        `json:"PriceTier8,omitempty"`
+	PriceTier9                   *float64                        `json:"PriceTier9,omitempty"`
+	PriceTier10                  *float64                        `json:"PriceTier10,omitempty"`
+	PriceTiers                   map[string]*float64             `json:"PriceTiers,omitempty"`
+	AverageCost                  *float64                        `json:"AverageCost,omitempty"`
+	ShortDescription             *string                         `json:"ShortDescription,omitempty"`
+	Description                  *string                         `json:"Description,omitempty"`
+	InternalNote                 *string                         `json:"InternalNote,omitempty"`
+	AdditionalAttribute1         *string                         `json:"AdditionalAttribute1,omitempty"`
+	AdditionalAttribute2         *string                         `json:"AdditionalAttribute2,omitempty"`
+	AdditionalAttribute3         *string                         `json:"AdditionalAttribute3,omitempty"`
+	AdditionalAttribute4         *string                         `json:"AdditionalAttribute4,omitempty"`
+	AdditionalAttribute5         *string                         `json:"AdditionalAttribute5,omitempty"`
+	AdditionalAttribute6         *string                         `json:"AdditionalAttribute6,omitempty"`
+	AdditionalAttribute7         *string                         `json:"AdditionalAttribute7,omitempty"`
+	AdditionalAttribute8         *string                         `json:"AdditionalAttribute8,omitempty"`
+	AdditionalAttribute9         *string                         `json:"AdditionalAttribute9,omitempty"`
+	AdditionalAttribute10        *string                         `json:"AdditionalAttribute10,omitempty"`
+	AlwaysShowQuantity           *string                         `json:"AlwaysShowQuantity,omitempty"`
+	BOMType                      *string                         `json:"BOMType,omitempty"`
+	WarrantyName                 *string                         `json:"WarrantyName,omitempty"`
+	AttributeSet                 *string                         `json:"AttributeSet,omitempty"`
+	DiscountRule                 *string                         `json:"DiscountRule,omitempty"`
+	Tags                         *string                         `json:"Tags,omitempty"`
+	StockLocator                 *string                         `json:"StockLocator,omitempty"`
+	COGSAccount                  *string                         `json:"COGSAccount,omitempty"`
+	RevenueAccount               *string                         `json:"RevenueAccount,omitempty"`
 	ExpenseAccount               *string                         `json:"ExpenseAccount,omitempty"`
-	InventoryAccount             *string                         `json:"InventoryAccount"`
-	PurchaseTaxRule              *string                         `json:"PurchaseTaxRule"`
-	SaleTaxRule                  *string                         `json:"SaleTaxRule"`
-	LastModifiedOn               *ISO8601Time                    `json:"LastModifiedOn"`
-	Sellable                     *bool                           `json:"Sellable"`
-	PickZones                    *string                         `json:"PickZones"`
-	BillOfMaterial               *bool                           `json:"BillOfMaterial"`
-	AutoAssembly                 *bool                           `json:"AutoAssembly"`
-	AutoDisassembly              *bool                           `json:"AutoDisassembly"`
-	AssemblyInstructionURL       *string                         `json:"AssemblyInstructionURL"`
-	Suppliers                    *[]ProductSupplier              `json:"Suppliers"`
-	ReorderLevels                *[]ProductReorderLevel          `json:"ReorderLevels"`
-	BillOfMaterialsProducts      *[]ProductBillOfMaterialProduct `json:"BillOfMaterialsProducts"`
-	BillOfMaterialsServices      *[]ProductBillOfMaterialService `json:"BillOfMaterialsServices"`
-	Movements                    *[]ProductMovement              `json:"Movements"`
-	Attachments                  *[]ProductAttachment            `json:"Attachments"`
-	CustomPrices                 *[]CustomPrice                  `json:"CustomPrices"`
-	CartonHeight                 *float64                        `json:"CartonHeight"`
-	CartonWidth                  *float64                        `json:"CartonWidth"`
-	CartonLength                 *float64                        `json:"CartonLength"`
-	CartonQuantity               *float64                        `json:"CartonQuantity"`
-	CartonInnerQuantity          *float64                        `json:"CartonInnerQuantity"`
-	HSCode                       *string                         `json:"HSCode"`
-	CountryOfOrigin              *string                         `json:"CountryOfOrigin"`
-	CountryOfOriginCode          *string                         `json:"CountryOfOriginCode"`
+	InventoryAccount             *string                         `json:"InventoryAccount,omitempty"`
+	PurchaseTaxRule              *string                         `json:"PurchaseTaxRule,omitempty"`
+	SaleTaxRule                  *string                         `json:"SaleTaxRule,omitempty"`
+	LastModifiedOn               *ISO8601Time                    `json:"LastModifiedOn,omitempty"`
+	Sellable                     *bool                           `json:"Sellable,omitempty"`
+	PickZones                    *string                         `json:"PickZones,omitempty"`
+	BillOfMaterial               *bool                           `json:"BillOfMaterial,omitempty"`
+	AutoAssembly                 *bool                           `json:"AutoAssembly,omitempty"`
+	AutoDisassembly              *bool                           `json:"AutoDisassembly,omitempty"`
+	AssemblyInstructionURL       *string                         `json:"AssemblyInstructionURL,omitempty"`
+	Suppliers                    *[]ProductSupplier              `json:"Suppliers,omitempty"`
+	ReorderLevels                *[]ProductReorderLevel          `json:"ReorderLevels,omitempty"`
+	BillOfMaterialsProducts      *[]ProductBillOfMaterialProduct `json:"BillOfMaterialsProducts,omitempty"`
+	BillOfMaterialsServices      *[]ProductBillOfMaterialService `json:"BillOfMaterialsServices,omitempty"`
+	Movements                    *[]ProductMovement              `json:"Movements,omitempty"`
+	Attachments                  *[]ProductAttachment            `json:"Attachments,omitempty"`
+	CustomPrices                 *[]CustomPrice                  `json:"CustomPrices,omitempty"`
+	CartonHeight                 *float64                        `json:"CartonHeight,omitempty"`
+	CartonWidth                  *float64                        `json:"CartonWidth,omitempty"`
+	CartonLength                 *float64                        `json:"CartonLength,omitempty"`
+	CartonQuantity               *float64                        `json:"CartonQuantity,omitempty"`
+	CartonInnerQuantity          *float64                        `json:"CartonInnerQuantity,omitempty"`
+	HSCode                       *string                         `json:"HSCode,omitempty"`
+	CountryOfOrigin              *string                         `json:"CountryOfOrigin,omitempty"`
+	CountryOfOriginCode          *string                         `json:"CountryOfOriginCode,omitempty"`
 }
 
 type ProductAvailability struct {
@@ -1121,4 +1187,71 @@ type AdditionalFields struct {
 	ProductCustomField8  *string  `json:"ProductCustomField8"`
 	ProductCustomField9  *string  `json:"ProductCustomField9"`
 	ProductCustomField10 *string  `json:"ProductCustomField10"`
+}
+
+type StockLine struct {
+	Quantity             float64      `json:"Quantity,omitempty"`
+	UnitCost             float64      `json:"UnitCost,omitempty"`
+	ProductID            *string      `json:"ProductID,omitempty"`
+	SKU                  *string      `json:"SKU,omitempty"`
+	ProductName          *string      `json:"ProductName,omitempty"`
+	LocationID           *string      `json:"LocationID,omitempty"`
+	Location             *string      `json:"Location,omitempty"`
+	BatchSN              *string      `json:"BatchSN,omitempty"`
+	ExpiryDate           *ISO8601Time `json:"ExpiryDate,omitempty"`
+	ReceivedDate         *ISO8601Time `json:"ReceivedDate,omitempty"`
+	Comments             *string      `json:"Comments,omitempty"`
+	ProductLength        *float64     `json:"ProductLength,omitempty"`
+	ProductWidth         *float64     `json:"ProductWidth,omitempty"`
+	ProductHeight        *float64     `json:"ProductHeight,omitempty"`
+	ProductWeight        *float64     `json:"ProductWeight,omitempty"`
+	WeightUnits          *string      `json:"WeightUnits,omitempty"`
+	DimensionsUnits      *string      `json:"DimensionsUnits,omitempty"`
+	ProductCustomField1  *string      `json:"ProductCustomField1,omitempty"`
+	ProductCustomField2  *string      `json:"ProductCustomField2,omitempty"`
+	ProductCustomField3  *string      `json:"ProductCustomField3,omitempty"`
+	ProductCustomField4  *string      `json:"ProductCustomField4,omitempty"`
+	ProductCustomField5  *string      `json:"ProductCustomField5,omitempty"`
+	ProductCustomField6  *string      `json:"ProductCustomField6,omitempty"`
+	ProductCustomField7  *string      `json:"ProductCustomField7,omitempty"`
+	ProductCustomField8  *string      `json:"ProductCustomField8,omitempty"`
+	ProductCustomField9  *string      `json:"ProductCustomField9,omitempty"`
+	ProductCustomField10 *string      `json:"ProductCustomField10,omitempty"`
+	Barcode              *string      `json:"Barcode,omitempty"`
+	Unit                 *string      `json:"Unit,omitempty"`
+	CostingMethod        *string      `json:"CostingMethod,omitempty"`
+}
+
+type TransactionStockLine struct {
+	ID            *string      `json:"ID"`
+	Debit         *string      `json:"Debit"`
+	Credit        *string      `json:"Credit"`
+	Amount        *float64     `json:"Amount"`
+	EffectiveDate *ISO8601Time `json:"EffectiveDate"`
+}
+
+type Location struct {
+	ID         *string `json:"ID"`
+	Name       *string `json:"Name"`
+	IsDefault  *bool   `json:"IsDefault"`
+	Deprecated *bool   `json:"Deprecated"`
+	// Bins                 *[]Bin  `json:"Bins"`
+	FixedAssetsLocation  *bool   `json:"FixedAssetsLocation"`
+	ParentID             *string `json:"ParentID"`
+	ReferenceCount       *int    `json:"ReferenceCount"`
+	AddressLine1         *string `json:"AddressLine1"`
+	AddressLine2         *string `json:"AddressLine2"`
+	AddressCitySuburb    *string `json:"AddressCitySuburb"`
+	AddressStateProvince *string `json:"AddressStateProvince"`
+	AddressZipPostCode   *string `json:"AddressZipPostCode"`
+	AddressCountry       *string `json:"AddressCountry"`
+	PickZones            *string `json:"PickZones"`
+	IsShopfloor          *bool   `json:"IsShopfloor"`
+	IsCoMan              *bool   `json:"IsCoMan"`
+	IsStaging            *bool   `json:"IsStaging"`
+}
+
+type IDName struct {
+	ID   *string `json:"ID"`
+	Name *string `json:"Name"`
 }

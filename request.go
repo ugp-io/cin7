@@ -8,11 +8,13 @@ import (
 )
 
 type Client struct {
-	APIKey       string
-	APIAccountID string
-	Products     ProductsService
-	Sales        SalesService
-	Purchasing   PurchasingService
+	APIKey          string
+	APIAccountID    string
+	Products        ProductsService
+	Sales           SalesService
+	Purchasing      PurchasingService
+	StockAdjustment StockAdjustmentService
+	Location        LocationService
 }
 
 func NewClient(apiKey, apiAccountID string) *Client {
@@ -25,6 +27,8 @@ func NewClient(apiKey, apiAccountID string) *Client {
 	c.Products = &ProductsServiceOp{client: c}
 	c.Sales = &SalesServiceOp{client: c}
 	c.Purchasing = &PurchasingServiceOp{client: c}
+	c.StockAdjustment = &StockAdjustmentServiceOp{client: c}
+	c.Location = &LocationServiceOp{client: c}
 
 	return c
 

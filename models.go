@@ -242,6 +242,22 @@ type CreateStockTake struct {
 	Categories    *[]IDName
 }
 
+type CreateStockTransfer struct {
+	Status               *string
+	From                 *string
+	FromLocation         *string
+	To                   *string
+	ToLocation           *string
+	CostDistributionType *string
+	InTransitAccount     *string
+	DepartureDate        *ISO8601Time
+	CompletionDate       *ISO8601Time
+	RequiredByDate       *ISO8601Time
+	Reference            *string
+	Lines                *[]StockTransferLine
+	SkipOrder            *bool
+}
+
 //////////////////////////////////////////
 /*			BROWSE REQUESTS				*/
 //////////////////////////////////////////
@@ -324,6 +340,13 @@ type BrowseLocationRequest struct {
 	ID         *string
 	Deprecated *string
 	Name       *string
+}
+
+type BrowseStockTransfer struct {
+	Page   *string
+	Limit  *string
+	Status *string
+	Search *string
 }
 
 //////////////////////////////////////////
@@ -502,6 +525,12 @@ type StockTakeResponse struct {
 	NonZeroStockOnHandProducts *[]StockLine            `json:"NonZeroStockOnHandProducts"`
 	ZeroStockOnHandProducts    *[]StockLine            `json:"ZeroStockOnHandProducts"`
 	Transactions               *[]TransactionStockLine `json:"Transactions"`
+}
+
+type StockTransferResponse struct {
+	Total             *int             `json:"Total"`
+	Page              *int             `json:"Page"`
+	StockTransferList []*StockTransfer `json:"StockTransferList"`
 }
 
 type LocationResponse struct {
@@ -1254,4 +1283,57 @@ type Location struct {
 type IDName struct {
 	ID   *string `json:"ID"`
 	Name *string `json:"Name"`
+}
+
+type StockTransfer struct {
+	TaskID               *string                  `json:"TaskID"`
+	Status               *string                  `json:"Status"`
+	From                 *string                  `json:"From"`
+	FromLocation         *string                  `json:"FromLocation"`
+	To                   *string                  `json:"To"`
+	ToLocation           *string                  `json:"ToLocation"`
+	Number               *string                  `json:"Number"`
+	CostDistributionType *string                  `json:"CostDistributionType"`
+	InTransitAccount     *string                  `json:"InTransitAccount"`
+	DepartureDate        *ISO8601Time             `json:"DepartureDate"`
+	CompletionDate       *ISO8601Time             `json:"CompletionDate"`
+	RequiredByDate       *ISO8601Time             `json:"RequiredByDate"`
+	Reference            *string                  `json:"Reference"`
+	Lines                *[]StockTransferLine     `json:"Lines"`
+	ManualJournals       *[]PurchaseManualJournal `json:"ManualJournals"`
+	SkipOrder            *bool                    `json:"SkipOrder"`
+	Order                *StockTransferOrder      `json:"Order"`
+}
+
+type StockTransferLine struct {
+	ProductID            *string      `json:"ProductID"`
+	SKU                  *string      `json:"SKU"`
+	ProductName          *string      `json:"ProductName"`
+	QuantityOnHand       *float64     `json:"QuantityOnHand"`
+	QuantityAvailable    *float64     `json:"QuantityAvailable"`
+	TransferQuantity     *float64     `json:"TransferQuantity"`
+	BatchSN              *string      `json:"BatchSN"`
+	ExpiryDate           *ISO8601Time `json:"ExpiryDate"`
+	Comments             *string      `json:"Comments"`
+	ProductLength        *float64     `json:"ProductLength"`
+	ProductWidth         *float64     `json:"ProductWidth"`
+	ProductHeight        *float64     `json:"ProductHeight"`
+	ProductWeight        *float64     `json:"ProductWeight"`
+	WeightUnits          *string      `json:"WeightUnits"`
+	DimensionsUnits      *string      `json:"DimensionsUnits"`
+	ProductCustomField1  *string      `json:"ProductCustomField1"`
+	ProductCustomField2  *string      `json:"ProductCustomField2"`
+	ProductCustomField3  *string      `json:"ProductCustomField3"`
+	ProductCustomField4  *string      `json:"ProductCustomField4"`
+	ProductCustomField5  *string      `json:"ProductCustomField5"`
+	ProductCustomField6  *string      `json:"ProductCustomField6"`
+	ProductCustomField7  *string      `json:"ProductCustomField7"`
+	ProductCustomField8  *string      `json:"ProductCustomField8"`
+	ProductCustomField9  *string      `json:"ProductCustomField9"`
+	ProductCustomField10 *string      `json:"ProductCustomField10"`
+}
+
+type StockTransferOrder struct {
+	Status *string              `json:"Status"`
+	Lines  *[]StockTransferLine `json:"Lines"`
 }

@@ -49,31 +49,31 @@ func (s *ProductsServiceOp) BrowseProducts(ctx context.Context, req BrowseProduc
 	}
 
 	if req.IncludeDeprecated != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeDeprecated=%t", *req.IncludeDeprecated))
+		urlBuild = append(urlBuild, fmt.Sprintf("IncludeDeprecated=%v", *req.IncludeDeprecated))
 	}
 
 	if req.IncludeBOM != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeBOM=%t", *req.IncludeBOM))
+		urlBuild = append(urlBuild, fmt.Sprintf("IncludeBOM=%v", *req.IncludeBOM))
 	}
 
 	if req.IncludeSuppliers != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeSuppliers=%t", *req.IncludeSuppliers))
+		urlBuild = append(urlBuild, fmt.Sprintf("IncludeSuppliers=%v", *req.IncludeSuppliers))
 	}
 
 	if req.IncludeMovements != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeMovements=%t", *req.IncludeMovements))
+		urlBuild = append(urlBuild, fmt.Sprintf("IncludeMovements=%v", *req.IncludeMovements))
 	}
 
 	if req.IncludeAttachments != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeAttachments=%t", *req.IncludeAttachments))
+		urlBuild = append(urlBuild, fmt.Sprintf("IncludeAttachments=%v", *req.IncludeAttachments))
 	}
 
 	if req.IncludeReorderLevels != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeReorderLevels=%t", *req.IncludeReorderLevels))
+		urlBuild = append(urlBuild, fmt.Sprintf("IncludeReorderLevels=%v", *req.IncludeReorderLevels))
 	}
 
 	if req.IncludeCustomPrices != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeCustomPrices=%t", *req.IncludeCustomPrices))
+		urlBuild = append(urlBuild, fmt.Sprintf("IncludeCustomPrices=%v", *req.IncludeCustomPrices))
 	}
 	productURL := url + `product?` + strings.Join(urlBuild, "&")
 

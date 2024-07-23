@@ -29,15 +29,15 @@ func (s *SalesServiceOp) ReadSale(ctx context.Context, req ReadSaleRequest) (*Sa
 	}
 
 	if req.CombineAdditionalCharges != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("CombineAdditionalCharges=%t", *req.CombineAdditionalCharges))
+		urlBuild = append(urlBuild, fmt.Sprintf("CombineAdditionalCharges=%v", *req.CombineAdditionalCharges))
 	}
 
 	if req.HideInventoryMovements != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("HideInventoryMovements=%t", *req.HideInventoryMovements))
+		urlBuild = append(urlBuild, fmt.Sprintf("HideInventoryMovements=%v", *req.HideInventoryMovements))
 	}
 
 	if req.IncludeTransactions != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeTransactions=%t", *req.IncludeTransactions))
+		urlBuild = append(urlBuild, fmt.Sprintf("IncludeTransactions=%v", *req.IncludeTransactions))
 	}
 
 	if req.CountryFormat != nil {
@@ -68,11 +68,11 @@ func (s *SalesServiceOp) ReadSaleOrder(ctx context.Context, req ReadSaleOrderReq
 	}
 
 	if req.CombineAdditionalCharges != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("CombineAdditionalCharges=%t", *req.CombineAdditionalCharges))
+		urlBuild = append(urlBuild, fmt.Sprintf("CombineAdditionalCharges=%v", *req.CombineAdditionalCharges))
 	}
 
 	if req.IncludeProductInfo != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeProductInfo=%t", *req.IncludeProductInfo))
+		urlBuild = append(urlBuild, fmt.Sprintf("IncludeProductInfo=%v", *req.IncludeProductInfo))
 	}
 
 	salesURL := url + `sale/order?` + strings.Join(urlBuild, "&")
@@ -100,11 +100,11 @@ func (s *SalesServiceOp) ReadSaleQuote(ctx context.Context, req ReadSaleQuoteReq
 	}
 
 	if req.CombineAdditionalCharges != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("CombineAdditionalCharges=%t", *req.CombineAdditionalCharges))
+		urlBuild = append(urlBuild, fmt.Sprintf("CombineAdditionalCharges=%v", *req.CombineAdditionalCharges))
 	}
 
 	if req.IncludeProductInfo != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeProductInfo=%t", *req.IncludeProductInfo))
+		urlBuild = append(urlBuild, fmt.Sprintf("IncludeProductInfo=%v", *req.IncludeProductInfo))
 	}
 
 	salesURL := url + `sale/quote?` + strings.Join(urlBuild, "&")

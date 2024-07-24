@@ -13,8 +13,8 @@ type StockAdjustmentServiceOp struct {
 
 type StockAdjustmentService interface {
 	ReadStockAdjustment(ctx context.Context, taskID string) (*StockAdjustmentResponse, error)
-	CreateStockAdjustments(ctx context.Context, req CreateStockAdjustment) (*StockAdjustmentResponse, error)
-	UpdateStockAdjustments(ctx context.Context, req CreateStockAdjustment) (*StockAdjustmentResponse, error)
+	CreateStockAdjustment(ctx context.Context, req CreateStockAdjustment) (*StockAdjustmentResponse, error)
+	UpdateStockAdjustment(ctx context.Context, req CreateStockAdjustment) (*StockAdjustmentResponse, error)
 
 	ReadStockTake(ctx context.Context, taskID string) (*StockTakeResponse, error)
 	CreateStockTake(ctx context.Context, req CreateStockTake) (*StockTakeResponse, error)
@@ -45,7 +45,7 @@ func (s *StockAdjustmentServiceOp) ReadStockAdjustment(ctx context.Context, task
 	return &response, nil
 }
 
-func (s *StockAdjustmentServiceOp) CreateStockAdjustments(ctx context.Context, req CreateStockAdjustment) (*StockAdjustmentResponse, error) {
+func (s *StockAdjustmentServiceOp) CreateStockAdjustment(ctx context.Context, req CreateStockAdjustment) (*StockAdjustmentResponse, error) {
 
 	var reqResponse []byte
 
@@ -70,7 +70,7 @@ func (s *StockAdjustmentServiceOp) CreateStockAdjustments(ctx context.Context, r
 	return &response, nil
 }
 
-func (s *StockAdjustmentServiceOp) UpdateStockAdjustments(ctx context.Context, req CreateStockAdjustment) (*StockAdjustmentResponse, error) {
+func (s *StockAdjustmentServiceOp) UpdateStockAdjustment(ctx context.Context, req CreateStockAdjustment) (*StockAdjustmentResponse, error) {
 
 	var reqResponse []byte
 

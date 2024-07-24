@@ -223,39 +223,39 @@ type CreateSaleQuote struct {
 }
 
 type CreateStockAdjustment struct {
-	EffectiveDate *ISO8601Time
-	Status        *string
-	TaskID        *string
-	Account       *string
-	Reference     *string
-	UpdateOnHand  *bool
-	Lines         []StockLine
+	EffectiveDate *ISO8601Time `json:"EffectiveDate,omitempty"`
+	Status        *string      `json:"Status,omitempty"`
+	TaskID        *string      `json:"TaskID,omitempty"`
+	Account       *string      `json:"Account,omitempty"`
+	Reference     *string      `json:"Reference,omitempty"`
+	UpdateOnHand  *bool        `json:"UpdateOnHand,omitempty"`
+	Lines         []StockLine  `json:"Lines"`
 }
 
 type CreateStockTake struct {
-	EffectiveDate *ISO8601Time
-	Account       *string
-	LocationID    *string
-	Location      *string
-	Reference     *string
-	Tags          *[]string
-	Categories    *[]IDName
+	EffectiveDate *ISO8601Time `json:"EffectiveDate,omitempty"`
+	Account       *string      `json:"Account,omitempty"`
+	LocationID    *string      `json:"LocationID,omitempty"`
+	Location      *string      `json:"Location,omitempty"`
+	Reference     *string      `json:"Reference,omitempty"`
+	Tags          *[]string    `json:"Tags,omitempty"`
+	Categories    *[]IDName    `json:"Categories,omitempty"`
 }
 
 type CreateStockTransfer struct {
-	Status               *string
-	From                 *string
-	FromLocation         *string
-	To                   *string
-	ToLocation           *string
-	CostDistributionType *string
-	InTransitAccount     *string
-	DepartureDate        *ISO8601Time
-	CompletionDate       *ISO8601Time
-	RequiredByDate       *ISO8601Time
-	Reference            *string
-	Lines                *[]StockTransferLine
-	SkipOrder            *bool
+	Status               *string              `json:"Status,omitempty"`
+	From                 *string              `json:"From,omitempty"`
+	FromLocation         *string              `json:"FromLocation,omitempty"`
+	To                   *string              `json:"To,omitempty"`
+	ToLocation           *string              `json:"ToLocation,omitempty"`
+	CostDistributionType *string              `json:"CostDistributionType,omitempty"`
+	InTransitAccount     *string              `json:"InTransitAccount,omitempty"`
+	DepartureDate        *ISO8601Time         `json:"DepartureDate,omitempty"`
+	CompletionDate       *ISO8601Time         `json:"CompletionDate,omitempty"`
+	RequiredByDate       *ISO8601Time         `json:"RequiredByDate,omitempty"`
+	Reference            *string              `json:"Reference,omitempty"`
+	Lines                *[]StockTransferLine `json:"Lines"`
+	SkipOrder            *bool                `json:"SkipOrder,omitempty"`
 }
 
 //////////////////////////////////////////
@@ -1071,18 +1071,18 @@ type PurchaseStockReceived struct {
 }
 
 type PurchaseStockLine struct {
-	Date        *ISO8601Time `json:"Date"`
-	Quantity    *float64     `json:"Quantity"`
-	ProductID   *string      `json:"ProductID"`
-	SKU         *string      `json:"SKU"`
-	Name        *string      `json:"Name"`
-	Location    *string      `json:"Location"`
-	LocationID  *string      `json:"LocationID"`
-	Received    *bool        `json:"Received"`
-	BatchSN     *string      `json:"BatchSN"`
-	SupplierSKU *string      `json:"SupplierSKU"`
-	ExpiryDate  *ISO8601Time `json:"ExpiryDate"`
-	CardID      *string      `json:"CardID"`
+	Date        *ISO8601Time `json:"Date,omitempty"`
+	Quantity    *float64     `json:"Quantity,omitempty"`
+	ProductID   *string      `json:"ProductID,omitempty"`
+	SKU         *string      `json:"SKU,omitempty"`
+	Name        *string      `json:"Name,omitempty"`
+	Location    *string      `json:"Location,omitempty"`
+	LocationID  *string      `json:"LocationID,omitempty"`
+	Received    *bool        `json:"Received,omitempty"`
+	BatchSN     *string      `json:"BatchSN,omitempty"`
+	SupplierSKU *string      `json:"SupplierSKU,omitempty"`
+	ExpiryDate  *ISO8601Time `json:"ExpiryDate,omitempty"`
+	CardID      *string      `json:"CardID,omitempty"`
 	AdditionalFields
 }
 
@@ -1141,15 +1141,15 @@ type PurchaseCreditNote struct {
 }
 
 type PurchaseUnstockLine struct {
-	CardID     *string      `json:"CardID"`
-	Date       *ISO8601Time `json:"Date"`
-	Quantity   *float64     `json:"Quantity"`
-	ProductID  *string      `json:"ProductID"`
-	SKU        *string      `json:"SKU"`
-	Name       *string      `json:"Name"`
-	Location   *string      `json:"Location"`
-	BatchSN    *string      `json:"BatchSN"`
-	ExpiryDate *ISO8601Time `json:"ExpiryDate"`
+	CardID     *string      `json:"CardID,omitempty"`
+	Date       *ISO8601Time `json:"Date,omitempty"`
+	Quantity   *float64     `json:"Quantity,omitempty"`
+	ProductID  *string      `json:"ProductID,omitempty"`
+	SKU        *string      `json:"SKU,omitempty"`
+	Name       *string      `json:"Name,omitempty"`
+	Location   *string      `json:"Location,omitempty"`
+	BatchSN    *string      `json:"BatchSN,omitempty"`
+	ExpiryDate *ISO8601Time `json:"ExpiryDate,omitempty"`
 	AdditionalFields
 }
 
@@ -1252,11 +1252,11 @@ type StockLine struct {
 }
 
 type TransactionStockLine struct {
-	ID            *string      `json:"ID"`
-	Debit         *string      `json:"Debit"`
-	Credit        *string      `json:"Credit"`
-	Amount        *float64     `json:"Amount"`
-	EffectiveDate *ISO8601Time `json:"EffectiveDate"`
+	ID            *string      `json:"ID,omitempty"`
+	Debit         *string      `json:"Debit,omitempty"`
+	Credit        *string      `json:"Credit,omitempty"`
+	Amount        *float64     `json:"Amount,omitempty"`
+	EffectiveDate *ISO8601Time `json:"EffectiveDate,omitempty"`
 }
 
 type Location struct {
@@ -1306,31 +1306,31 @@ type StockTransfer struct {
 }
 
 type StockTransferLine struct {
-	ProductID            *string      `json:"ProductID"`
-	SKU                  *string      `json:"SKU"`
-	ProductName          *string      `json:"ProductName"`
-	QuantityOnHand       *float64     `json:"QuantityOnHand"`
-	QuantityAvailable    *float64     `json:"QuantityAvailable"`
-	TransferQuantity     *float64     `json:"TransferQuantity"`
-	BatchSN              *string      `json:"BatchSN"`
-	ExpiryDate           *ISO8601Time `json:"ExpiryDate"`
-	Comments             *string      `json:"Comments"`
-	ProductLength        *float64     `json:"ProductLength"`
-	ProductWidth         *float64     `json:"ProductWidth"`
-	ProductHeight        *float64     `json:"ProductHeight"`
-	ProductWeight        *float64     `json:"ProductWeight"`
-	WeightUnits          *string      `json:"WeightUnits"`
-	DimensionsUnits      *string      `json:"DimensionsUnits"`
-	ProductCustomField1  *string      `json:"ProductCustomField1"`
-	ProductCustomField2  *string      `json:"ProductCustomField2"`
-	ProductCustomField3  *string      `json:"ProductCustomField3"`
-	ProductCustomField4  *string      `json:"ProductCustomField4"`
-	ProductCustomField5  *string      `json:"ProductCustomField5"`
-	ProductCustomField6  *string      `json:"ProductCustomField6"`
-	ProductCustomField7  *string      `json:"ProductCustomField7"`
-	ProductCustomField8  *string      `json:"ProductCustomField8"`
-	ProductCustomField9  *string      `json:"ProductCustomField9"`
-	ProductCustomField10 *string      `json:"ProductCustomField10"`
+	ProductID            *string      `json:"ProductID,omitempty"`
+	SKU                  *string      `json:"SKU,omitempty"`
+	ProductName          *string      `json:"ProductName,omitempty"`
+	QuantityOnHand       *float64     `json:"QuantityOnHand,omitempty"`
+	QuantityAvailable    *float64     `json:"QuantityAvailable,omitempty"`
+	TransferQuantity     *float64     `json:"TransferQuantity,omitempty"`
+	BatchSN              *string      `json:"BatchSN,omitempty"`
+	ExpiryDate           *ISO8601Time `json:"ExpiryDate,omitempty"`
+	Comments             *string      `json:"Comments,omitempty"`
+	ProductLength        *float64     `json:"ProductLength,omitempty"`
+	ProductWidth         *float64     `json:"ProductWidth,omitempty"`
+	ProductHeight        *float64     `json:"ProductHeight,omitempty"`
+	ProductWeight        *float64     `json:"ProductWeight,omitempty"`
+	WeightUnits          *string      `json:"WeightUnits,omitempty"`
+	DimensionsUnits      *string      `json:"DimensionsUnits,omitempty"`
+	ProductCustomField1  *string      `json:"ProductCustomField1,omitempty"`
+	ProductCustomField2  *string      `json:"ProductCustomField2,omitempty"`
+	ProductCustomField3  *string      `json:"ProductCustomField3,omitempty"`
+	ProductCustomField4  *string      `json:"ProductCustomField4,omitempty"`
+	ProductCustomField5  *string      `json:"ProductCustomField5,omitempty"`
+	ProductCustomField6  *string      `json:"ProductCustomField6,omitempty"`
+	ProductCustomField7  *string      `json:"ProductCustomField7,omitempty"`
+	ProductCustomField8  *string      `json:"ProductCustomField8,omitempty"`
+	ProductCustomField9  *string      `json:"ProductCustomField9,omitempty"`
+	ProductCustomField10 *string      `json:"ProductCustomField10,omitempty"`
 }
 
 type StockTransferOrder struct {

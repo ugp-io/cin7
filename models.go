@@ -1260,24 +1260,32 @@ type TransactionStockLine struct {
 }
 
 type Location struct {
-	ID         *string `json:"ID"`
-	Name       *string `json:"Name"`
-	IsDefault  *bool   `json:"IsDefault"`
-	Deprecated *bool   `json:"Deprecated"`
-	// Bins                 *[]Bin  `json:"Bins"`
-	FixedAssetsLocation  *bool   `json:"FixedAssetsLocation"`
-	ParentID             *string `json:"ParentID"`
-	ReferenceCount       *int    `json:"ReferenceCount"`
-	AddressLine1         *string `json:"AddressLine1"`
-	AddressLine2         *string `json:"AddressLine2"`
-	AddressCitySuburb    *string `json:"AddressCitySuburb"`
-	AddressStateProvince *string `json:"AddressStateProvince"`
-	AddressZipPostCode   *string `json:"AddressZipPostCode"`
-	AddressCountry       *string `json:"AddressCountry"`
-	PickZones            *string `json:"PickZones"`
-	IsShopfloor          *bool   `json:"IsShopfloor"`
-	IsCoMan              *bool   `json:"IsCoMan"`
-	IsStaging            *bool   `json:"IsStaging"`
+	ID                   *string        `json:"ID"`
+	Name                 *string        `json:"Name"`
+	IsDefault            *bool          `json:"IsDefault"`
+	IsDeprecated         *bool          `json:"IsDeprecated"`
+	Bins                 *[]LocationBin `json:"Bins"`
+	FixedAssetsLocation  *bool          `json:"FixedAssetsLocation"`
+	ParentID             *string        `json:"ParentID"`
+	ParentName           *string        `json:"ParentName"`
+	ReferenceCount       *int           `json:"ReferenceCount"`
+	AddressLine1         *string        `json:"AddressLine1"`
+	AddressLine2         *string        `json:"AddressLine2"`
+	AddressCitySuburb    *string        `json:"AddressCitySuburb"`
+	AddressStateProvince *string        `json:"AddressStateProvince"`
+	AddressZipPostCode   *string        `json:"AddressZipPostCode"`
+	AddressCountry       *string        `json:"AddressCountry"`
+	PickZones            *string        `json:"PickZones"`
+	IsShopfloor          *bool          `json:"IsShopfloor"`
+	IsCoMan              *bool          `json:"IsCoMan"`
+	IsStaging            *bool          `json:"IsStaging"`
+}
+
+type LocationBin struct {
+	ID           *string `json:"ID"`
+	Name         *string `json:"Name"`
+	IsDeprecated *bool   `json:"IsDeprecated"`
+	IsStaging    *bool   `json:"IsStaging"`
 }
 
 type IDName struct {

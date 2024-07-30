@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"net/url"
 	"strings"
 )
 
@@ -29,7 +30,7 @@ func (s *StockAdjustmentServiceOp) ReadStockAdjustment(ctx context.Context, task
 
 	var reqResponse []byte
 
-	productURL := url + `stockadjustment?TaskID=` + taskID
+	productURL := requestURL + `stockadjustment?TaskID=` + taskID
 
 	errRequest := s.client.Request("GET", productURL, nil, &reqResponse)
 	if errRequest != nil {
@@ -49,7 +50,7 @@ func (s *StockAdjustmentServiceOp) CreateStockAdjustment(ctx context.Context, re
 
 	var reqResponse []byte
 
-	productURL := url + `stockadjustment`
+	productURL := requestURL + `stockadjustment`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
@@ -74,7 +75,7 @@ func (s *StockAdjustmentServiceOp) UpdateStockAdjustment(ctx context.Context, re
 
 	var reqResponse []byte
 
-	productURL := url + `stockadjustment`
+	productURL := requestURL + `stockadjustment`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
@@ -99,7 +100,7 @@ func (s *StockAdjustmentServiceOp) ReadStockTake(ctx context.Context, taskID str
 
 	var reqResponse []byte
 
-	productURL := url + `stocktake?TaskID=` + taskID
+	productURL := requestURL + `stocktake?TaskID=` + taskID
 
 	errRequest := s.client.Request("GET", productURL, nil, &reqResponse)
 	if errRequest != nil {
@@ -119,7 +120,7 @@ func (s *StockAdjustmentServiceOp) CreateStockTake(ctx context.Context, req Crea
 
 	var reqResponse []byte
 
-	productURL := url + `stocktake`
+	productURL := requestURL + `stocktake`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
@@ -144,7 +145,7 @@ func (s *StockAdjustmentServiceOp) UpdateStockTake(ctx context.Context, req Crea
 
 	var reqResponse []byte
 
-	productURL := url + `stocktake`
+	productURL := requestURL + `stocktake`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
@@ -169,7 +170,7 @@ func (s *StockAdjustmentServiceOp) ReadStockTransfer(ctx context.Context, taskID
 
 	var reqResponse []byte
 
-	productURL := url + `stockTransfer?TaskID=` + taskID
+	productURL := requestURL + `stockTransfer?TaskID=` + taskID
 
 	errRequest := s.client.Request("GET", productURL, nil, &reqResponse)
 	if errRequest != nil {
@@ -189,7 +190,7 @@ func (s *StockAdjustmentServiceOp) CreateStockTransfer(ctx context.Context, req 
 
 	var reqResponse []byte
 
-	productURL := url + `stockTransfer`
+	productURL := requestURL + `stockTransfer`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
@@ -216,22 +217,22 @@ func (s *StockAdjustmentServiceOp) BrowseStockTransfer(ctx context.Context, req 
 	var urlBuild []string
 
 	if req.Page != nil {
-		urlBuild = append(urlBuild, "Page="+*req.Page)
+		urlBuild = append(urlBuild, "Page="+url.QueryEscape(*req.Page))
 	}
 
 	if req.Limit != nil {
-		urlBuild = append(urlBuild, "Limit="+*req.Limit)
+		urlBuild = append(urlBuild, "Limit="+url.QueryEscape(*req.Limit))
 	}
 
 	if req.Status != nil {
-		urlBuild = append(urlBuild, "Status="+*req.Status)
+		urlBuild = append(urlBuild, "Status="+url.QueryEscape(*req.Status))
 	}
 
 	if req.Search != nil {
-		urlBuild = append(urlBuild, "Search="+*req.Search)
+		urlBuild = append(urlBuild, "Search="+url.QueryEscape(*req.Search))
 	}
 
-	productURL := url + `stockTransfer?` + strings.Join(urlBuild, "&")
+	productURL := requestURL + `stockTransfer?` + strings.Join(urlBuild, "&")
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {

@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-var url = `https://inventory.dearsystems.com/externalapi/v2/`
+var requestURL = `https://inventory.dearsystems.com/externalapi/v2/`
 
 type ISO8601Time struct {
 	time.Time

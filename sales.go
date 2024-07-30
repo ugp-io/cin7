@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 )
 
@@ -24,27 +25,29 @@ type SalesService interface {
 func (s *SalesServiceOp) ReadSale(ctx context.Context, req ReadSaleRequest) (*SaleResponse, error) {
 
 	var reqResponse []byte
-	urlBuild := []string{
-		"ID=" + req.ID,
+	var urlBuild []string
+
+	if req.ID != "" {
+		urlBuild = append(urlBuild, "ID="+url.QueryEscape(req.ID))
 	}
 
 	if req.CombineAdditionalCharges != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("CombineAdditionalCharges=%v", *req.CombineAdditionalCharges))
+		urlBuild = append(urlBuild, "CombineAdditionalCharges="+url.QueryEscape(*req.CombineAdditionalCharges))
 	}
 
 	if req.HideInventoryMovements != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("HideInventoryMovements=%v", *req.HideInventoryMovements))
+		urlBuild = append(urlBuild, "HideInventoryMovements="+url.QueryEscape(*req.HideInventoryMovements))
 	}
 
 	if req.IncludeTransactions != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeTransactions=%v", *req.IncludeTransactions))
+		urlBuild = append(urlBuild, "IncludeTransactions="+url.QueryEscape(*req.IncludeTransactions))
 	}
 
 	if req.CountryFormat != nil {
-		urlBuild = append(urlBuild, "CountryFormat="+*req.CountryFormat)
+		urlBuild = append(urlBuild, "CountryFormat="+url.QueryEscape(*req.CountryFormat))
 	}
 
-	salesURL := url + `sale?` + strings.Join(urlBuild, "&")
+	salesURL := requestURL + `sale?` + strings.Join(urlBuild, "&")
 
 	errRequest := s.client.Request("GET", salesURL, nil, &reqResponse)
 	if errRequest != nil {
@@ -63,19 +66,21 @@ func (s *SalesServiceOp) ReadSale(ctx context.Context, req ReadSaleRequest) (*Sa
 func (s *SalesServiceOp) ReadSaleOrder(ctx context.Context, req ReadSaleOrderRequest) (*SaleOrderResponse, error) {
 
 	var reqResponse []byte
-	urlBuild := []string{
-		"SaleID=" + req.SaleID,
+	var urlBuild []string
+
+	if req.SaleID != "" {
+		urlBuild = append(urlBuild, "SaleID="+url.QueryEscape(req.SaleID))
 	}
 
 	if req.CombineAdditionalCharges != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("CombineAdditionalCharges=%v", *req.CombineAdditionalCharges))
+		urlBuild = append(urlBuild, "CombineAdditionalCharges="+url.QueryEscape(*req.CombineAdditionalCharges))
 	}
 
 	if req.IncludeProductInfo != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeProductInfo=%v", *req.IncludeProductInfo))
+		urlBuild = append(urlBuild, "IncludeProductInfo="+url.QueryEscape(*req.IncludeProductInfo))
 	}
 
-	salesURL := url + `sale/order?` + strings.Join(urlBuild, "&")
+	salesURL := requestURL + `sale/order?` + strings.Join(urlBuild, "&")
 
 	errRequest := s.client.Request("GET", salesURL, nil, &reqResponse)
 	if errRequest != nil {
@@ -107,7 +112,7 @@ func (s *SalesServiceOp) ReadSaleQuote(ctx context.Context, req ReadSaleQuoteReq
 		urlBuild = append(urlBuild, fmt.Sprintf("IncludeProductInfo=%v", *req.IncludeProductInfo))
 	}
 
-	salesURL := url + `sale/quote?` + strings.Join(urlBuild, "&")
+	salesURL := requestURL + `sale/quote?` + strings.Join(urlBuild, "&")
 
 	errRequest := s.client.Request("GET", salesURL, nil, &reqResponse)
 	if errRequest != nil {
@@ -126,9 +131,8 @@ func (s *SalesServiceOp) ReadSaleQuote(ctx context.Context, req ReadSaleQuoteReq
 func (s *SalesServiceOp) CreateSale(ctx context.Context, req CreateSale) (*SaleResponse, error) {
 
 	var reqResponse []byte
-	var urlBuild []string
 
-	productURL := url + `sale?` + strings.Join(urlBuild, "&")
+	productURL := requestURL + `sale`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
@@ -152,9 +156,8 @@ func (s *SalesServiceOp) CreateSale(ctx context.Context, req CreateSale) (*SaleR
 func (s *SalesServiceOp) CreateSaleOrder(ctx context.Context, req CreateSaleOrder) (*SaleOrderResponse, error) {
 
 	var reqResponse []byte
-	var urlBuild []string
 
-	productURL := url + `sale/order?` + strings.Join(urlBuild, "&")
+	productURL := requestURL + `sale/order`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
@@ -178,9 +181,8 @@ func (s *SalesServiceOp) CreateSaleOrder(ctx context.Context, req CreateSaleOrde
 func (s *SalesServiceOp) CreateSaleQuote(ctx context.Context, req CreateSaleQuote) (*SaleQuoteResponse, error) {
 
 	var reqResponse []byte
-	var urlBuild []string
 
-	productURL := url + `sale/quote?` + strings.Join(urlBuild, "&")
+	productURL := requestURL + `sale/quote`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {

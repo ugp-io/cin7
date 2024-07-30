@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
+	"net/url"
 	"strings"
 )
 
@@ -25,57 +25,58 @@ func (s *ProductsServiceOp) BrowseProducts(ctx context.Context, req BrowseProduc
 	var urlBuild []string
 
 	if req.ID != nil {
-		urlBuild = append(urlBuild, "ID="+*req.ID)
+		urlBuild = append(urlBuild, "ID="+url.QueryEscape(*req.ID))
 	}
 
 	if req.Page != nil {
-		urlBuild = append(urlBuild, "Page="+*req.Page)
+		urlBuild = append(urlBuild, "Page="+url.QueryEscape(*req.Page))
 	}
 
 	if req.Limit != nil {
-		urlBuild = append(urlBuild, "Limit="+*req.Limit)
+		urlBuild = append(urlBuild, "Limit="+url.QueryEscape(*req.Limit))
 	}
 
 	if req.Name != nil {
-		urlBuild = append(urlBuild, "Name="+*req.Name)
+		urlBuild = append(urlBuild, "Name="+url.QueryEscape(*req.Name))
 	}
 
 	if req.Sku != nil {
-		urlBuild = append(urlBuild, "Sku="+*req.Sku)
+		urlBuild = append(urlBuild, "Sku="+url.QueryEscape(*req.Sku))
 	}
 
 	if req.ModifiedSince != nil {
-		urlBuild = append(urlBuild, "ModifiedSince="+*req.ModifiedSince)
+		urlBuild = append(urlBuild, "ModifiedSince="+url.QueryEscape(*req.ModifiedSince))
 	}
 
 	if req.IncludeDeprecated != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeDeprecated=%v", *req.IncludeDeprecated))
+		urlBuild = append(urlBuild, "IncludeDeprecated="+url.QueryEscape(*req.IncludeDeprecated))
 	}
 
 	if req.IncludeBOM != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeBOM=%v", *req.IncludeBOM))
+		urlBuild = append(urlBuild, "IncludeBOM="+url.QueryEscape(*req.IncludeBOM))
 	}
 
 	if req.IncludeSuppliers != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeSuppliers=%v", *req.IncludeSuppliers))
+		urlBuild = append(urlBuild, "IncludeSuppliers="+url.QueryEscape(*req.IncludeSuppliers))
 	}
 
 	if req.IncludeMovements != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeMovements=%v", *req.IncludeMovements))
+		urlBuild = append(urlBuild, "IncludeMovements="+url.QueryEscape(*req.IncludeMovements))
 	}
 
 	if req.IncludeAttachments != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeAttachments=%v", *req.IncludeAttachments))
+		urlBuild = append(urlBuild, "IncludeAttachments="+url.QueryEscape(*req.IncludeAttachments))
 	}
 
 	if req.IncludeReorderLevels != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeReorderLevels=%v", *req.IncludeReorderLevels))
+		urlBuild = append(urlBuild, "IncludeReorderLevels="+url.QueryEscape(*req.IncludeReorderLevels))
 	}
 
 	if req.IncludeCustomPrices != nil {
-		urlBuild = append(urlBuild, fmt.Sprintf("IncludeCustomPrices=%v", *req.IncludeCustomPrices))
+		urlBuild = append(urlBuild, "IncludeCustomPrices="+url.QueryEscape(*req.IncludeCustomPrices))
 	}
-	productURL := url + `product?` + strings.Join(urlBuild, "&")
+
+	productURL := requestURL + `product?` + strings.Join(urlBuild, "&")
 
 	errRequest := s.client.Request("GET", productURL, nil, &reqResponse)
 	if errRequest != nil {
@@ -94,9 +95,8 @@ func (s *ProductsServiceOp) BrowseProducts(ctx context.Context, req BrowseProduc
 func (s *ProductsServiceOp) CreateProduct(ctx context.Context, req CreateProduct) (*ProductResponse, error) {
 
 	var reqResponse []byte
-	var urlBuild []string
 
-	productURL := url + `product?` + strings.Join(urlBuild, "&")
+	productURL := requestURL + `product`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
@@ -120,9 +120,8 @@ func (s *ProductsServiceOp) CreateProduct(ctx context.Context, req CreateProduct
 func (s *ProductsServiceOp) UpdateProduct(ctx context.Context, req CreateProduct) (*ProductResponse, error) {
 
 	var reqResponse []byte
-	var urlBuild []string
 
-	productURL := url + `product?` + strings.Join(urlBuild, "&")
+	productURL := requestURL + `product`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
@@ -148,39 +147,39 @@ func (s *ProductsServiceOp) BrowseProductsAvailability(ctx context.Context, req 
 	var reqResponse []byte
 	var urlBuild []string
 
+	if req.ID != nil {
+		urlBuild = append(urlBuild, "ID="+url.QueryEscape(*req.ID))
+	}
+
 	if req.Page != nil {
-		urlBuild = append(urlBuild, "Page="+*req.Page)
+		urlBuild = append(urlBuild, "Page="+url.QueryEscape(*req.Page))
 	}
 
 	if req.Limit != nil {
-		urlBuild = append(urlBuild, "Limit="+*req.Limit)
-	}
-
-	if req.ID != nil {
-		urlBuild = append(urlBuild, "ID="+*req.ID)
+		urlBuild = append(urlBuild, "Limit="+url.QueryEscape(*req.Limit))
 	}
 
 	if req.Name != nil {
-		urlBuild = append(urlBuild, "Name="+*req.Name)
+		urlBuild = append(urlBuild, "Name="+url.QueryEscape(*req.Name))
 	}
 
 	if req.Sku != nil {
-		urlBuild = append(urlBuild, "Sku="+*req.Sku)
+		urlBuild = append(urlBuild, "Sku="+url.QueryEscape(*req.Sku))
 	}
 
 	if req.Location != nil {
-		urlBuild = append(urlBuild, "Location="+*req.Location)
+		urlBuild = append(urlBuild, "Location="+url.QueryEscape(*req.Location))
 	}
 
 	if req.Batch != nil {
-		urlBuild = append(urlBuild, "Batch="+*req.Batch)
+		urlBuild = append(urlBuild, "Batch="+url.QueryEscape(*req.Batch))
 	}
 
 	if req.Category != nil {
-		urlBuild = append(urlBuild, "Category="+*req.Category)
+		urlBuild = append(urlBuild, "Category="+url.QueryEscape(*req.Category))
 	}
 
-	productURL := url + `ref/productavailability?` + strings.Join(urlBuild, "&")
+	productURL := requestURL + `ref/productavailability` + strings.Join(urlBuild, "&")
 
 	errRequest := s.client.Request("GET", productURL, nil, &reqResponse)
 	if errRequest != nil {

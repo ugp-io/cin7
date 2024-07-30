@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
 )
 
@@ -26,54 +27,54 @@ func (s *PurchasingServiceOp) BrowsePurchase(ctx context.Context, req BrowsePurc
 	urlBuild := []string{}
 
 	if req.Page != nil {
-		urlBuild = append(urlBuild, "Page="+*req.Page)
+		urlBuild = append(urlBuild, "Page="+url.QueryEscape(*req.Page))
 	}
 
 	if req.Limit != nil {
-		urlBuild = append(urlBuild, "Limit="+*req.Limit)
+		urlBuild = append(urlBuild, "Limit="+url.QueryEscape(*req.Limit))
 	}
 
 	if req.Search != nil {
-		urlBuild = append(urlBuild, "Search="+*req.Search)
+		urlBuild = append(urlBuild, "Search="+url.QueryEscape(*req.Search))
 	}
 
 	if req.RequiredBy != nil {
-		urlBuild = append(urlBuild, "RequiredBy="+*req.RequiredBy)
+		urlBuild = append(urlBuild, "RequiredBy="+url.QueryEscape(*req.RequiredBy))
 	}
 
 	if req.UpdatedSince != nil {
-		urlBuild = append(urlBuild, "UpdatedSince="+*req.UpdatedSince)
+		urlBuild = append(urlBuild, "UpdatedSince="+url.QueryEscape(*req.UpdatedSince))
 	}
 
 	if req.OrderStatus != nil {
-		urlBuild = append(urlBuild, "OrderStatus="+*req.OrderStatus)
+		urlBuild = append(urlBuild, "OrderStatus="+url.QueryEscape(*req.OrderStatus))
 	}
 
 	if req.RestockReceivedStatus != nil {
-		urlBuild = append(urlBuild, "RestockReceivedStatus="+*req.RestockReceivedStatus)
+		urlBuild = append(urlBuild, "RestockReceivedStatus="+url.QueryEscape(*req.RestockReceivedStatus))
 	}
 
 	if req.InvoiceStatus != nil {
-		urlBuild = append(urlBuild, "InvoiceStatus="+*req.InvoiceStatus)
+		urlBuild = append(urlBuild, "InvoiceStatus="+url.QueryEscape(*req.InvoiceStatus))
 	}
 
 	if req.CreditNoteStatus != nil {
-		urlBuild = append(urlBuild, "CreditNoteStatus="+*req.CreditNoteStatus)
+		urlBuild = append(urlBuild, "CreditNoteStatus="+url.QueryEscape(*req.CreditNoteStatus))
 	}
 
 	if req.UnstockStatus != nil {
-		urlBuild = append(urlBuild, "UnstockStatus="+*req.UnstockStatus)
+		urlBuild = append(urlBuild, "UnstockStatus="+url.QueryEscape(*req.UnstockStatus))
 	}
 
 	if req.Status != nil {
-		urlBuild = append(urlBuild, "Status="+*req.Status)
+		urlBuild = append(urlBuild, "Status="+url.QueryEscape(*req.Status))
 	}
 
 	if req.DropShipTaskID != nil {
-		urlBuild = append(urlBuild, "DropShipTaskID="+*req.DropShipTaskID)
+		urlBuild = append(urlBuild, "DropShipTaskID="+url.QueryEscape(*req.DropShipTaskID))
 	}
 
-	purchasingURL := url + `purchaseList?` + strings.Join(urlBuild, "&")
+	purchasingURL := requestURL + `purchaseList?` + strings.Join(urlBuild, "&")
 
 	errRequest := s.client.Request("GET", purchasingURL, nil, &reqResponse)
 	if errRequest != nil {
@@ -99,11 +100,15 @@ func (s *PurchasingServiceOp) ReadPurchase(ctx context.Context, req ReadPurchase
 		"ID=" + req.ID,
 	}
 
-	if req.CombineAdditionalCharges != nil {
-		urlBuild = append(urlBuild, "CombineAdditionalCharges="+*req.CombineAdditionalCharges)
+	if req.ID != "" {
+		urlBuild = append(urlBuild, "ID="+url.QueryEscape(req.ID))
 	}
 
-	purchasingURL := url + `purchase?` + strings.Join(urlBuild, "&")
+	if req.CombineAdditionalCharges != nil {
+		urlBuild = append(urlBuild, "CombineAdditionalCharges="+url.QueryEscape(*req.CombineAdditionalCharges))
+	}
+
+	purchasingURL := requestURL + `purchase?` + strings.Join(urlBuild, "&")
 
 	errRequest := s.client.Request("GET", purchasingURL, nil, &reqResponse)
 	if errRequest != nil {
@@ -122,9 +127,8 @@ func (s *PurchasingServiceOp) ReadPurchase(ctx context.Context, req ReadPurchase
 func (s *PurchasingServiceOp) CreatePurchase(ctx context.Context, req CreatePurchase) (*PurchaseResponse, error) {
 
 	var reqResponse []byte
-	var urlBuild []string
 
-	productURL := url + `purchase?` + strings.Join(urlBuild, "&")
+	productURL := requestURL + `purchase`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
@@ -152,11 +156,15 @@ func (s *PurchasingServiceOp) ReadPurchaseOrder(ctx context.Context, req ReadPur
 		"TaskID=" + req.TaskID,
 	}
 
-	if req.CombineAdditionalCharges != nil {
-		urlBuild = append(urlBuild, "CombineAdditionalCharges="+*req.CombineAdditionalCharges)
+	if req.TaskID != "" {
+		urlBuild = append(urlBuild, "TaskID="+url.QueryEscape(req.TaskID))
 	}
 
-	purchasingURL := url + `purchase/order?` + strings.Join(urlBuild, "&")
+	if req.CombineAdditionalCharges != nil {
+		urlBuild = append(urlBuild, "CombineAdditionalCharges="+url.QueryEscape(*req.CombineAdditionalCharges))
+	}
+
+	purchasingURL := requestURL + `purchase/order?` + strings.Join(urlBuild, "&")
 
 	errRequest := s.client.Request("GET", purchasingURL, nil, &reqResponse)
 	if errRequest != nil {
@@ -175,9 +183,8 @@ func (s *PurchasingServiceOp) ReadPurchaseOrder(ctx context.Context, req ReadPur
 func (s *PurchasingServiceOp) CreatePurchaseOrder(ctx context.Context, req CreatePurchaseOrder) (*PurchaseOrderResponse, error) {
 
 	var reqResponse []byte
-	var urlBuild []string
 
-	productURL := url + `purchase/order?` + strings.Join(urlBuild, "&")
+	productURL := requestURL + `purchase/order`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {

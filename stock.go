@@ -15,24 +15,25 @@ type StockAdjustmentServiceOp struct {
 type StockAdjustmentService interface {
 	ReadStockAdjustment(ctx context.Context, taskID string) (*StockAdjustmentResponse, error)
 	CreateStockAdjustment(ctx context.Context, req CreateStockAdjustment) (*StockAdjustmentResponse, error)
-	UpdateStockAdjustment(ctx context.Context, req CreateStockAdjustment) (*StockAdjustmentResponse, error)
+	EditStockAdjustment(ctx context.Context, req EditStockAdjustment) (*StockAdjustmentResponse, error)
 
 	ReadStockTake(ctx context.Context, taskID string) (*StockTakeResponse, error)
 	CreateStockTake(ctx context.Context, req CreateStockTake) (*StockTakeResponse, error)
-	UpdateStockTake(ctx context.Context, req CreateStockTake) (*StockTakeResponse, error)
+	EditStockTake(ctx context.Context, req EditStockTake) (*StockTakeResponse, error)
 
 	BrowseStockTransfer(ctx context.Context, req BrowseStockTransfer) (*StockTransferResponse, error)
 	ReadStockTransfer(ctx context.Context, taskID string) (*StockTransfer, error)
 	CreateStockTransfer(ctx context.Context, req CreateStockTransfer) (*StockTransfer, error)
+	EditStockTransfer(ctx context.Context, req EditStockTransfer) (*StockTransfer, error)
 }
 
 func (s *StockAdjustmentServiceOp) ReadStockAdjustment(ctx context.Context, taskID string) (*StockAdjustmentResponse, error) {
 
 	var reqResponse []byte
 
-	productURL := requestURL + `stockadjustment?TaskID=` + taskID
+	stockURL := requestURL + `stockadjustment?TaskID=` + taskID
 
-	errRequest := s.client.Request("GET", productURL, nil, &reqResponse)
+	errRequest := s.client.Request("GET", stockURL, nil, &reqResponse)
 	if errRequest != nil {
 		return nil, errRequest
 	}
@@ -50,14 +51,14 @@ func (s *StockAdjustmentServiceOp) CreateStockAdjustment(ctx context.Context, re
 
 	var reqResponse []byte
 
-	productURL := requestURL + `stockadjustment`
+	stockURL := requestURL + `stockadjustment`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
 		return nil, err
 	}
 
-	errRequest := s.client.Request("POST", productURL, bytes.NewBuffer(reqBody), &reqResponse)
+	errRequest := s.client.Request("POST", stockURL, bytes.NewBuffer(reqBody), &reqResponse)
 	if errRequest != nil {
 		return nil, errRequest
 	}
@@ -71,18 +72,18 @@ func (s *StockAdjustmentServiceOp) CreateStockAdjustment(ctx context.Context, re
 	return &response, nil
 }
 
-func (s *StockAdjustmentServiceOp) UpdateStockAdjustment(ctx context.Context, req CreateStockAdjustment) (*StockAdjustmentResponse, error) {
+func (s *StockAdjustmentServiceOp) EditStockAdjustment(ctx context.Context, req EditStockAdjustment) (*StockAdjustmentResponse, error) {
 
 	var reqResponse []byte
 
-	productURL := requestURL + `stockadjustment`
+	stockURL := requestURL + `stockadjustment`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
 		return nil, err
 	}
 
-	errRequest := s.client.Request("PUT", productURL, bytes.NewBuffer(reqBody), &reqResponse)
+	errRequest := s.client.Request("PUT", stockURL, bytes.NewBuffer(reqBody), &reqResponse)
 	if errRequest != nil {
 		return nil, errRequest
 	}
@@ -100,9 +101,9 @@ func (s *StockAdjustmentServiceOp) ReadStockTake(ctx context.Context, taskID str
 
 	var reqResponse []byte
 
-	productURL := requestURL + `stocktake?TaskID=` + taskID
+	stockURL := requestURL + `stocktake?TaskID=` + taskID
 
-	errRequest := s.client.Request("GET", productURL, nil, &reqResponse)
+	errRequest := s.client.Request("GET", stockURL, nil, &reqResponse)
 	if errRequest != nil {
 		return nil, errRequest
 	}
@@ -120,14 +121,14 @@ func (s *StockAdjustmentServiceOp) CreateStockTake(ctx context.Context, req Crea
 
 	var reqResponse []byte
 
-	productURL := requestURL + `stocktake`
+	stockURL := requestURL + `stocktake`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
 		return nil, err
 	}
 
-	errRequest := s.client.Request("POST", productURL, bytes.NewBuffer(reqBody), &reqResponse)
+	errRequest := s.client.Request("POST", stockURL, bytes.NewBuffer(reqBody), &reqResponse)
 	if errRequest != nil {
 		return nil, errRequest
 	}
@@ -141,18 +142,18 @@ func (s *StockAdjustmentServiceOp) CreateStockTake(ctx context.Context, req Crea
 	return &response, nil
 }
 
-func (s *StockAdjustmentServiceOp) UpdateStockTake(ctx context.Context, req CreateStockTake) (*StockTakeResponse, error) {
+func (s *StockAdjustmentServiceOp) EditStockTake(ctx context.Context, req EditStockTake) (*StockTakeResponse, error) {
 
 	var reqResponse []byte
 
-	productURL := requestURL + `stocktake`
+	stockURL := requestURL + `stocktake`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
 		return nil, err
 	}
 
-	errRequest := s.client.Request("PUT", productURL, bytes.NewBuffer(reqBody), &reqResponse)
+	errRequest := s.client.Request("PUT", stockURL, bytes.NewBuffer(reqBody), &reqResponse)
 	if errRequest != nil {
 		return nil, errRequest
 	}
@@ -170,9 +171,9 @@ func (s *StockAdjustmentServiceOp) ReadStockTransfer(ctx context.Context, taskID
 
 	var reqResponse []byte
 
-	productURL := requestURL + `stockTransfer?TaskID=` + taskID
+	stockURL := requestURL + `stockTransfer?TaskID=` + taskID
 
-	errRequest := s.client.Request("GET", productURL, nil, &reqResponse)
+	errRequest := s.client.Request("GET", stockURL, nil, &reqResponse)
 	if errRequest != nil {
 		return nil, errRequest
 	}
@@ -190,14 +191,14 @@ func (s *StockAdjustmentServiceOp) CreateStockTransfer(ctx context.Context, req 
 
 	var reqResponse []byte
 
-	productURL := requestURL + `stockTransfer`
+	stockURL := requestURL + `stockTransfer`
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
 		return nil, err
 	}
 
-	errRequest := s.client.Request("POST", productURL, bytes.NewBuffer(reqBody), &reqResponse)
+	errRequest := s.client.Request("POST", stockURL, bytes.NewBuffer(reqBody), &reqResponse)
 	if errRequest != nil {
 		return nil, errRequest
 	}
@@ -232,19 +233,44 @@ func (s *StockAdjustmentServiceOp) BrowseStockTransfer(ctx context.Context, req 
 		urlBuild = append(urlBuild, "Search="+url.QueryEscape(*req.Search))
 	}
 
-	productURL := requestURL + `stockTransfer?` + strings.Join(urlBuild, "&")
+	stockURL := requestURL + `stockTransfer?` + strings.Join(urlBuild, "&")
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
 		return nil, err
 	}
 
-	errRequest := s.client.Request("GET", productURL, bytes.NewBuffer(reqBody), &reqResponse)
+	errRequest := s.client.Request("GET", stockURL, bytes.NewBuffer(reqBody), &reqResponse)
 	if errRequest != nil {
 		return nil, errRequest
 	}
 
 	var response StockTransferResponse
+	err = json.Unmarshal(reqResponse, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
+func (s *StockAdjustmentServiceOp) EditStockTransfer(ctx context.Context, req EditStockTransfer) (*StockTransfer, error) {
+
+	var reqResponse []byte
+
+	stockURL := requestURL + `stockTransfer`
+
+	reqBody, err := json.Marshal(req)
+	if err != nil {
+		return nil, err
+	}
+
+	errRequest := s.client.Request("PUT", stockURL, bytes.NewBuffer(reqBody), &reqResponse)
+	if errRequest != nil {
+		return nil, errRequest
+	}
+
+	var response StockTransfer
 	err = json.Unmarshal(reqResponse, &response)
 	if err != nil {
 		return nil, err

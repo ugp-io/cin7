@@ -25,8 +25,7 @@ func (ct *ISO8601Time) UnmarshalJSON(b []byte) error {
 
 	var err error
 	for _, layout := range iso8601Layouts {
-		var t time.Time
-		t, err = time.Parse(layout, s)
+		t, err := time.Parse(layout, s)
 		if err == nil {
 			ct.Time = t
 			return nil
@@ -243,6 +242,47 @@ type CreateStockTake struct {
 }
 
 type CreateStockTransfer struct {
+	Status               *string              `json:"Status,omitempty"`
+	From                 *string              `json:"From,omitempty"`
+	FromLocation         *string              `json:"FromLocation,omitempty"`
+	To                   *string              `json:"To,omitempty"`
+	ToLocation           *string              `json:"ToLocation,omitempty"`
+	CostDistributionType *string              `json:"CostDistributionType,omitempty"`
+	InTransitAccount     *string              `json:"InTransitAccount,omitempty"`
+	DepartureDate        *ISO8601Time         `json:"DepartureDate,omitempty"`
+	CompletionDate       *ISO8601Time         `json:"CompletionDate,omitempty"`
+	RequiredByDate       *ISO8601Time         `json:"RequiredByDate,omitempty"`
+	Reference            *string              `json:"Reference,omitempty"`
+	Lines                *[]StockTransferLine `json:"Lines"`
+	SkipOrder            *bool                `json:"SkipOrder,omitempty"`
+}
+
+//////////////////////////////////////////
+/*			UPDATE REQUESTS				*/
+//////////////////////////////////////////
+type EditStockAdjustment struct {
+	TaskID        string       `json:"TaskID,omitempty"`
+	EffectiveDate *ISO8601Time `json:"EffectiveDate,omitempty"`
+	Status        *string      `json:"Status,omitempty"`
+	Account       *string      `json:"Account,omitempty"`
+	Reference     *string      `json:"Reference,omitempty"`
+	UpdateOnHand  *bool        `json:"UpdateOnHand,omitempty"`
+	Lines         []StockLine  `json:"Lines"`
+}
+
+type EditStockTake struct {
+	TaskID        string       `json:"TaskID,omitempty"`
+	EffectiveDate *ISO8601Time `json:"EffectiveDate,omitempty"`
+	Account       *string      `json:"Account,omitempty"`
+	LocationID    *string      `json:"LocationID,omitempty"`
+	Location      *string      `json:"Location,omitempty"`
+	Reference     *string      `json:"Reference,omitempty"`
+	Tags          *[]string    `json:"Tags,omitempty"`
+	Categories    *[]IDName    `json:"Categories,omitempty"`
+}
+
+type EditStockTransfer struct {
+	TaskID               string               `json:"TaskID,omitempty"`
 	Status               *string              `json:"Status,omitempty"`
 	From                 *string              `json:"From,omitempty"`
 	FromLocation         *string              `json:"FromLocation,omitempty"`
@@ -502,8 +542,8 @@ type StockAdjustmentResponse struct {
 	Status             *string                 `json:"Status"`
 	Account            *string                 `json:"Account"`
 	Reference          *string                 `json:"Reference"`
-	ExistingStockLines *[]StockLine            `json:"ExistingStockLines"`
-	NewStockLines      *[]StockLine            `json:"NewStockLines"`
+	ExistingStockLines *[]ExistingStockLine    `json:"ExistingStockLines"`
+	NewStockLines      *[]NewStockLine         `json:"NewStockLines"`
 	Transactions       *[]TransactionStockLine `json:"Transactions"`
 }
 
@@ -1249,6 +1289,76 @@ type StockLine struct {
 	Barcode              *string      `json:"Barcode,omitempty"`
 	Unit                 *string      `json:"Unit,omitempty"`
 	CostingMethod        *string      `json:"CostingMethod,omitempty"`
+}
+
+type ExistingStockLine struct {
+	ProductID            *string         `json:"ProductID,omitempty"`
+	SKU                  *string         `json:"SKU,omitempty"`
+	ProductName          *string         `json:"ProductName,omitempty"`
+	QuantityOnHand       float64         `json:"QuantityOnHand,omitempty"`
+	Available            *float64        `json:"Available,omitempty"`
+	Adjustment           *float64        `json:"Adjustment,omitempty"`
+	LocationID           *string         `json:"LocationID,omitempty"`
+	Location             *string         `json:"Location,omitempty"`
+	BatchSN              *string         `json:"BatchSN,omitempty"`
+	ExpiryDate           *ISO8601Time    `json:"ExpiryDate,omitempty"`
+	Comments             *string         `json:"Comments,omitempty"`
+	ProductLength        *float64        `json:"ProductLength,omitempty"`
+	ProductWidth         *float64        `json:"ProductWidth,omitempty"`
+	ProductHeight        *float64        `json:"ProductHeight,omitempty"`
+	ProductWeight        *float64        `json:"ProductWeight,omitempty"`
+	WeightUnits          *string         `json:"WeightUnits,omitempty"`
+	DimensionsUnits      *string         `json:"DimensionsUnits,omitempty"`
+	ProductCustomField1  *string         `json:"ProductCustomField1,omitempty"`
+	ProductCustomField2  *string         `json:"ProductCustomField2,omitempty"`
+	ProductCustomField3  *string         `json:"ProductCustomField3,omitempty"`
+	ProductCustomField4  *string         `json:"ProductCustomField4,omitempty"`
+	ProductCustomField5  *string         `json:"ProductCustomField5,omitempty"`
+	ProductCustomField6  *string         `json:"ProductCustomField6,omitempty"`
+	ProductCustomField7  *string         `json:"ProductCustomField7,omitempty"`
+	ProductCustomField8  *string         `json:"ProductCustomField8,omitempty"`
+	ProductCustomField9  *string         `json:"ProductCustomField9,omitempty"`
+	ProductCustomField10 *string         `json:"ProductCustomField10,omitempty"`
+	Barcode              *string         `json:"Barcode,omitempty"`
+	StockLocator         *string         `json:"StockLocator,omitempty"`
+	Unit                 *string         `json:"Unit,omitempty"`
+	CostingMethod        *string         `json:"CostingMethod,omitempty"`
+	Image                *AttachmentLine `json:"Image,omitempty"`
+}
+
+type NewStockLine struct {
+	ProductID            *string         `json:"ProductID,omitempty"`
+	SKU                  *string         `json:"SKU,omitempty"`
+	ProductName          *string         `json:"ProductName,omitempty"`
+	Quantity             float64         `json:"Quantity,omitempty"`
+	UnitCost             *float64        `json:"UnitCost,omitempty"`
+	LocationID           *string         `json:"LocationID,omitempty"`
+	Location             *string         `json:"Location,omitempty"`
+	BatchSN              *string         `json:"BatchSN,omitempty"`
+	ExpiryDate           *ISO8601Time    `json:"ExpiryDate,omitempty"`
+	ReceivedDate         *ISO8601Time    `json:"ReceivedDate,omitempty"`
+	Comments             *string         `json:"Comments,omitempty"`
+	ProductLength        *float64        `json:"ProductLength,omitempty"`
+	ProductWidth         *float64        `json:"ProductWidth,omitempty"`
+	ProductHeight        *float64        `json:"ProductHeight,omitempty"`
+	ProductWeight        *float64        `json:"ProductWeight,omitempty"`
+	WeightUnits          *string         `json:"WeightUnits,omitempty"`
+	DimensionsUnits      *string         `json:"DimensionsUnits,omitempty"`
+	ProductCustomField1  *string         `json:"ProductCustomField1,omitempty"`
+	ProductCustomField2  *string         `json:"ProductCustomField2,omitempty"`
+	ProductCustomField3  *string         `json:"ProductCustomField3,omitempty"`
+	ProductCustomField4  *string         `json:"ProductCustomField4,omitempty"`
+	ProductCustomField5  *string         `json:"ProductCustomField5,omitempty"`
+	ProductCustomField6  *string         `json:"ProductCustomField6,omitempty"`
+	ProductCustomField7  *string         `json:"ProductCustomField7,omitempty"`
+	ProductCustomField8  *string         `json:"ProductCustomField8,omitempty"`
+	ProductCustomField9  *string         `json:"ProductCustomField9,omitempty"`
+	ProductCustomField10 *string         `json:"ProductCustomField10,omitempty"`
+	Barcode              *string         `json:"Barcode,omitempty"`
+	StockLocator         *string         `json:"StockLocator,omitempty"`
+	Unit                 *string         `json:"Unit,omitempty"`
+	CostingMethod        *string         `json:"CostingMethod,omitempty"`
+	Image                *AttachmentLine `json:"Image,omitempty"`
 }
 
 type TransactionStockLine struct {

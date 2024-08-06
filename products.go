@@ -179,7 +179,7 @@ func (s *ProductsServiceOp) BrowseProductsAvailability(ctx context.Context, req 
 		urlBuild = append(urlBuild, "Category="+url.QueryEscape(*req.Category))
 	}
 
-	productURL := requestURL + `ref/productavailability` + strings.Join(urlBuild, "&")
+	productURL := requestURL + `ref/productavailability?` + strings.Join(urlBuild, "&")
 
 	errRequest := s.client.Request("GET", productURL, nil, &reqResponse)
 	if errRequest != nil {

@@ -261,13 +261,13 @@ type CreateStockTransfer struct {
 /*			UPDATE REQUESTS				*/
 //////////////////////////////////////////
 type EditStockAdjustment struct {
-	TaskID        string       `json:"TaskID,omitempty"`
-	EffectiveDate *ISO8601Time `json:"EffectiveDate,omitempty"`
-	Status        *string      `json:"Status,omitempty"`
-	Account       *string      `json:"Account,omitempty"`
-	Reference     *string      `json:"Reference,omitempty"`
-	UpdateOnHand  *bool        `json:"UpdateOnHand,omitempty"`
-	Lines         []StockLine  `json:"Lines"`
+	TaskID        string          `json:"TaskID,omitempty"`
+	EffectiveDate *ISO8601Time    `json:"EffectiveDate,omitempty"`
+	Status        *string         `json:"Status,omitempty"`
+	Account       *string         `json:"Account,omitempty"`
+	Reference     *string         `json:"Reference,omitempty"`
+	UpdateOnHand  *bool           `json:"UpdateOnHand,omitempty"`
+	Lines         *[]NewStockLine `json:"Lines,omitempty"`
 }
 
 type EditStockTake struct {

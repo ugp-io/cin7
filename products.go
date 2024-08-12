@@ -16,7 +16,7 @@ type ProductsService interface {
 	BrowseProducts(ctx context.Context, req BrowseProductRequest) (*ProductResponse, error)
 	BrowseProductsAvailability(ctx context.Context, req BrowseProductAvailabilityRequest) (*ProductAvailabilityResponse, error)
 	CreateProduct(ctx context.Context, req CreateProduct) (*ProductResponse, error)
-	UpdateProduct(ctx context.Context, req CreateProduct) (*ProductResponse, error)
+	UpdateProduct(ctx context.Context, req EditProduct) (*ProductResponse, error)
 }
 
 func (s *ProductsServiceOp) BrowseProducts(ctx context.Context, req BrowseProductRequest) (*ProductResponse, error) {
@@ -117,7 +117,7 @@ func (s *ProductsServiceOp) CreateProduct(ctx context.Context, req CreateProduct
 	return &response, nil
 }
 
-func (s *ProductsServiceOp) UpdateProduct(ctx context.Context, req CreateProduct) (*ProductResponse, error) {
+func (s *ProductsServiceOp) UpdateProduct(ctx context.Context, req EditProduct) (*ProductResponse, error) {
 
 	var reqResponse []byte
 

@@ -298,6 +298,86 @@ type EditStockTransfer struct {
 	SkipOrder            *bool                `json:"SkipOrder,omitempty"`
 }
 
+type EditProduct struct {
+	ID                           string                          `json:"ID"`
+	SKU                          *string                         `json:"SKU,omitempty"`
+	Name                         *string                         `json:"Name,omitempty"` // maximum length is 100 characters
+	Category                     *string                         `json:"Category,omitempty"`
+	Type                         *string                         `json:"Type,omitempty"`
+	CostingMethod                *string                         `json:"CostingMethod,omitempty"`                // Valid values: FIFO, Special - Batch, Special - Serial Number, FIFO - Serial Number, FIFO - Batch, FEFO - Batch, FEFO - Serial Number
+	UOM                          *string                         `json:"UOM,omitempty"`                          // A unit of measure with this name must exist in reference books under units
+	Status                       *string                         `json:"Status,omitempty"`                       // Valid values: Active and Deprecated
+	QuantityToProduce            *float64                        `json:"QuantityToProduce,omitempty"`            // Required if BillOfMaterial is true
+	AssemblyCostEstimationMethod *string                         `json:"AssemblyCostEstimationMethod,omitempty"` // Required if BillOfMaterial is true
+	Brand                        *string                         `json:"Brand,omitempty"`
+	DropShipMode                 *string                         `json:"DropShipMode,omitempty"`    // Valid values: No Drop Ship, Optional Drop Ship, Always Drop Ship. Default value is No Drop Ship
+	DefaultLocation              *string                         `json:"DefaultLocation,omitempty"` // Location with this name must exist in reference books under locations
+	Length                       *float64                        `json:"Length,omitempty"`
+	Width                        *float64                        `json:"Width,omitempty"`
+	Height                       *float64                        `json:"Height,omitempty"`
+	Weight                       *float64                        `json:"Weight,omitempty"`
+	CartonLength                 *float64                        `json:"CartonLength,omitempty"`
+	CartonWidth                  *float64                        `json:"CartonWidth,omitempty"`
+	CartonHeight                 *float64                        `json:"CartonHeight,omitempty"`
+	CartonQuantity               *float64                        `json:"CartonQuantity,omitempty"`
+	CartonInnerQuantity          *float64                        `json:"CartonInnerQuantity,omitempty"`
+	WeightUnits                  *string                         `json:"WeightUnits,omitempty"` // Valid values: g, kg, oz, lb
+	DimensionsUnits              *string                         `json:"DimensionsUnits,omitempty"`
+	Barcode                      *string                         `json:"Barcode,omitempty"`
+	MinimumBeforeReorder         *float64                        `json:"MinimumBeforeReorder,omitempty"`
+	ReorderQuantity              *float64                        `json:"ReorderQuantity,omitempty"`
+	PriceTier1                   *float64                        `json:"PriceTier1,omitempty"`
+	PriceTier2                   *float64                        `json:"PriceTier2,omitempty"`
+	PriceTier3                   *float64                        `json:"PriceTier3,omitempty"`
+	PriceTier4                   *float64                        `json:"PriceTier4,omitempty"`
+	PriceTier5                   *float64                        `json:"PriceTier5,omitempty"`
+	PriceTier6                   *float64                        `json:"PriceTier6,omitempty"`
+	PriceTier7                   *float64                        `json:"PriceTier7,omitempty"`
+	PriceTier8                   *float64                        `json:"PriceTier8,omitempty"`
+	PriceTier9                   *float64                        `json:"PriceTier9,omitempty"`
+	PriceTier10                  *float64                        `json:"PriceTier10,omitempty"`
+	ShortDescription             *string                         `json:"ShortDescription,omitempty"`
+	Description                  *string                         `json:"Description,omitempty"`
+	InternalNote                 *string                         `json:"InternalNote,omitempty"`
+	AdditionalAttribute1         *string                         `json:"AdditionalAttribute1,omitempty"`
+	AdditionalAttribute2         *string                         `json:"AdditionalAttribute2,omitempty"`
+	AdditionalAttribute3         *string                         `json:"AdditionalAttribute3,omitempty"`
+	AdditionalAttribute4         *string                         `json:"AdditionalAttribute4,omitempty"`
+	AdditionalAttribute5         *string                         `json:"AdditionalAttribute5,omitempty"`
+	AdditionalAttribute6         *string                         `json:"AdditionalAttribute6,omitempty"`
+	AdditionalAttribute7         *string                         `json:"AdditionalAttribute7,omitempty"`
+	AdditionalAttribute8         *string                         `json:"AdditionalAttribute8,omitempty"`
+	AdditionalAttribute9         *string                         `json:"AdditionalAttribute9,omitempty"`
+	AdditionalAttribute10        *string                         `json:"AdditionalAttribute10,omitempty"`
+	AttributeSet                 *string                         `json:"AttributeSet,omitempty"`
+	DiscountRule                 *string                         `json:"DiscountRule,omitempty"` // discount with this name must exist in Product Discounts reference book and should be active
+	Tags                         *string                         `json:"Tags,omitempty"`         // Comma delimited list
+	StockLocator                 *string                         `json:"StockLocator,omitempty"`
+	COGSAccount                  *string                         `json:"COGSAccount,omitempty"`      // Account code of an active EXPENSE class account from Chart Of Accounts
+	RevenueAccount               *string                         `json:"RevenueAccount,omitempty"`   // Account code of an active REVENUE class account from Chart Of Accounts
+	ExpenseAccount               *string                         `json:"ExpenseAccount,omitempty"`   // Account code of an active EXPENSE class account from Chart Of Accounts
+	InventoryAccount             *string                         `json:"InventoryAccount,omitempty"` // Account code of an active ASSET class account from Chart Of Accounts with Type not equal to FIXED or BANK
+	PurchaseTaxRule              *string                         `json:"PurchaseTaxRule,omitempty"`  // Tax Rule with this name must exist in Taxation Rules reference book and should be Active and have For Purchases flag set to “true” in API
+	SaleTaxRule                  *string                         `json:"SaleTaxRule,omitempty"`      // Tax Rule with this name must exist in Taxation Rules reference book and should be Active and have For Sales flag set to “true” in API
+	Sellable                     *bool                           `json:"Sellable,omitempty"`         // Default value is true
+	PickZones                    *string                         `json:"PickZones,omitempty"`
+	BillOfMaterial               *bool                           `json:"BillOfMaterial,omitempty"`
+	AutoAssembly                 *bool                           `json:"AutoAssembly,omitempty"`
+	AutoDisassembly              *bool                           `json:"AutoDisassembly,omitempty"`
+	AssemblyInstructionURL       *string                         `json:"AssemblyInstructionURL,omitempty"`
+	HSCode                       *string                         `json:"HSCode,omitempty"`
+	CountryOfOrigin              *string                         `json:"CountryOfOrigin,omitempty"`
+	CountryOfOriginCode          *string                         `json:"CountryOfOriginCode,omitempty"`
+	Suppliers                    *[]ProductSupplier              `json:"Suppliers,omitempty"`
+	ReorderLevels                *[]ProductReorderLevel          `json:"ReorderLevels,omitempty"`
+	BillOfMaterialsProducts      *[]ProductBillOfMaterialProduct `json:"BillOfMaterialsProducts,omitempty"`
+	BillOfMaterialsServices      *[]ProductBillOfMaterialService `json:"BillOfMaterialsServices,omitempty"`
+	Movements                    *[]ProductMovement              `json:"Movements,omitempty"`
+	Attachments                  *[]AttachmentLine               `json:"Attachments,omitempty"`
+	CustomPrices                 *[]CustomPrice                  `json:"CustomPrices,omitempty"`
+	// PriceTiers
+}
+
 //////////////////////////////////////////
 /*			BROWSE REQUESTS				*/
 //////////////////////////////////////////
@@ -656,7 +736,7 @@ type Product struct {
 	BillOfMaterialsProducts      *[]ProductBillOfMaterialProduct `json:"BillOfMaterialsProducts,omitempty"`
 	BillOfMaterialsServices      *[]ProductBillOfMaterialService `json:"BillOfMaterialsServices,omitempty"`
 	Movements                    *[]ProductMovement              `json:"Movements,omitempty"`
-	Attachments                  *[]ProductAttachment            `json:"Attachments,omitempty"`
+	Attachments                  *[]AttachmentLine               `json:"Attachments,omitempty"`
 	CustomPrices                 *[]CustomPrice                  `json:"CustomPrices,omitempty"`
 	CartonHeight                 *float64                        `json:"CartonHeight,omitempty"`
 	CartonWidth                  *float64                        `json:"CartonWidth,omitempty"`
@@ -724,14 +804,6 @@ type ProductMovement struct {
 	BatchSN    *float64     `json:"BatchSN"`
 	ExpiryDate *ISO8601Time `json:"ExpiryDate"`
 	FromTo     *string      `json:"FromTo"`
-}
-
-type ProductAttachment struct {
-	ID          *string `json:"ID"`
-	ContentType *string `json:"ContentType"`
-	IsDefault   *bool   `json:"IsDefault"`
-	FileName    *string `json:"FileName"`
-	DownloadUrl *string `json:"DownloadUrl"`
 }
 
 type CustomPrice struct {

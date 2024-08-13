@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -16,6 +17,7 @@ type StockAdjustmentService interface {
 	ReadStockAdjustment(ctx context.Context, taskID string) (*StockAdjustmentResponse, error)
 	CreateStockAdjustment(ctx context.Context, req CreateStockAdjustment) (*StockAdjustmentResponse, error)
 	EditStockAdjustment(ctx context.Context, req EditStockAdjustment) (*StockAdjustmentResponse, error)
+	ToggleVoidStockAdjustment(ctx context.Context, taskID string, toggleVoid bool) (*StockAdjustmentResponse, error)
 
 	ReadStockTake(ctx context.Context, taskID string) (*StockTakeResponse, error)
 	CreateStockTake(ctx context.Context, req CreateStockTake) (*StockTakeResponse, error)
@@ -90,6 +92,30 @@ func (s *StockAdjustmentServiceOp) EditStockAdjustment(ctx context.Context, req 
 
 	var response StockAdjustmentResponse
 	err = json.Unmarshal(reqResponse, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
+func (s *StockAdjustmentServiceOp) ToggleVoidStockAdjustment(ctx context.Context, taskID string, toggleVoid bool) (*StockAdjustmentResponse, error) {
+
+	var reqResponse []byte
+	urlBuild := []string{
+		"ID=" + url.QueryEscape(taskID),
+		"Void=" + url.QueryEscape(strconv.FormatBool(toggleVoid)),
+	}
+
+	stockURL := requestURL + `stockadjustment?` + strings.Join(urlBuild, "&")
+
+	errRequest := s.client.Request("DELETE", stockURL, nil, &reqResponse)
+	if errRequest != nil {
+		return nil, errRequest
+	}
+
+	var response StockAdjustmentResponse
+	err := json.Unmarshal(reqResponse, &response)
 	if err != nil {
 		return nil, err
 	}

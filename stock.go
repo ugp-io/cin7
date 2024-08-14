@@ -27,6 +27,7 @@ type StockAdjustmentService interface {
 	ReadStockTransfer(ctx context.Context, taskID string) (*StockTransfer, error)
 	CreateStockTransfer(ctx context.Context, req CreateStockTransfer) (*StockTransfer, error)
 	EditStockTransfer(ctx context.Context, req EditStockTransfer) (*StockTransfer, error)
+	ToggleVoidStockTransfer(ctx context.Context, taskID string, toggleVoid bool) (*StockTransfer, error)
 }
 
 func (s *StockAdjustmentServiceOp) ReadStockAdjustment(ctx context.Context, taskID string) (*StockAdjustmentResponse, error) {
@@ -259,7 +260,7 @@ func (s *StockAdjustmentServiceOp) BrowseStockTransfer(ctx context.Context, req 
 		urlBuild = append(urlBuild, "Search="+url.QueryEscape(*req.Search))
 	}
 
-	stockURL := requestURL + `stockTransfer?` + strings.Join(urlBuild, "&")
+	stockURL := requestURL + `stockTransferList?` + strings.Join(urlBuild, "&")
 
 	reqBody, err := json.Marshal(req)
 	if err != nil {
@@ -298,6 +299,30 @@ func (s *StockAdjustmentServiceOp) EditStockTransfer(ctx context.Context, req Ed
 
 	var response StockTransfer
 	err = json.Unmarshal(reqResponse, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
+func (s *StockAdjustmentServiceOp) ToggleVoidStockTransfer(ctx context.Context, taskID string, toggleVoid bool) (*StockTransfer, error) {
+
+	var reqResponse []byte
+	urlBuild := []string{
+		"ID=" + url.QueryEscape(taskID),
+		"Void=" + url.QueryEscape(strconv.FormatBool(toggleVoid)),
+	}
+
+	stockURL := requestURL + `stockTransfer?` + strings.Join(urlBuild, "&")
+
+	errRequest := s.client.Request("DELETE", stockURL, nil, &reqResponse)
+	if errRequest != nil {
+		return nil, errRequest
+	}
+
+	var response StockTransfer
+	err := json.Unmarshal(reqResponse, &response)
 	if err != nil {
 		return nil, err
 	}

@@ -424,6 +424,26 @@ type BrowsePurchaseRequest struct {
 	DropShipTaskID        *string
 }
 
+type BrowseSaleRequest struct {
+	Page                   *string
+	Limit                  *string
+	Search                 *string
+	CreatedSince           *string
+	UpdatedSince           *string
+	ShipBy                 *string
+	QuoteStatus            *string
+	OrderStatus            *string
+	CombinedPickStatus     *string
+	CombinedPackStatus     *string
+	CombinedShippingStatus *string
+	CombinedInvoiceStatus  *string
+	CreditNoteStatus       *string
+	ExternalID             *string
+	Status                 *string
+	ReadyForShipping       *string
+	OrderLocationID        *string
+}
+
 type ReadPurchaseRequest struct {
 	ID                       string
 	CombineAdditionalCharges *string
@@ -536,6 +556,46 @@ type PurchaseOrderResponse struct {
 	TotalBeforeTax           *float64                    `json:"TotalBeforeTax"`
 	Tax                      *float64                    `json:"Tax"`
 	Total                    *float64                    `json:"Total"`
+}
+
+type SaleListResponse struct {
+	Total *int        `json:"Total"`
+	Page  *int        `json:"Page"`
+	Sales []*SaleList `json:"SaleList"`
+}
+
+type SaleList struct {
+	ID                      *string      `json:"SaleID"`
+	OrderNumber             *string      `json:"OrderNumber"`
+	Status                  *string      `json:"Status"`
+	OrderDate               *ISO8601Time `json:"OrderDate"`
+	InvoiceDate             *ISO8601Time `json:"InvoiceDate"`
+	Customer                *string      `json:"Customer"`
+	CustomerID              *string      `json:"CustomerID"`
+	InvoiceNumber           *string      `json:"InvoiceNumber"`
+	CustomerReference       *string      `json:"CustomerReference"`
+	InvoiceAmount           *float64     `json:"InvoiceAmount"`
+	PaidAmount              *float64     `json:"PaidAmount"`
+	InvoiceDueDate          *ISO8601Time `json:"InvoiceDueDate"`
+	ShipBy                  *ISO8601Time `json:"ShipBy"`
+	BaseCurrency            *string      `json:"BaseCurrency"`
+	CustomerCurrency        *string      `json:"CustomerCurrency"`
+	CreditNoteNumber        *string      `json:"CreditNoteNumber"`
+	Updated                 *ISO8601Time `json:"Updated"`
+	QuoteStatus             *string      `json:"QuoteStatus"`
+	OrderStatus             *string      `json:"OrderStatus"`
+	CombinedPickingStatus   *string      `json:"CombinedPickingStatus"`
+	CombinedPackingStatus   *string      `json:"CombinedPackingStatus"`
+	CombinedShippingStatus  *string      `json:"CombinedShippingStatus"`
+	FulFilmentStatus        *string      `json:"FulFilmentStatus"`
+	CombinedInvoiceStatus   *string      `json:"CombinedInvoiceStatus"`
+	CreditNoteStatus        *string      `json:"CreditNoteStatus"`
+	CombinedPaymentStatus   *string      `json:"CombinedPaymentStatus"`
+	Type                    *string      `json:"Type"`
+	CombinedTrackingNumbers *string      `json:"CombinedTrackingNumbers"`
+	SourceChannel           *string      `json:"SourceChannel"`
+	ExternalID              *string      `json:"ExternalID"`
+	OrderLocationID         *string      `json:"OrderLocationID"`
 }
 
 type SaleResponse struct {

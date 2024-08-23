@@ -15,6 +15,7 @@ type Client struct {
 	Purchasing      PurchasingService
 	StockAdjustment StockAdjustmentService
 	Location        LocationService
+	Supplier        SupplierService
 }
 
 func NewClient(apiKey, apiAccountID string) *Client {
@@ -29,6 +30,7 @@ func NewClient(apiKey, apiAccountID string) *Client {
 	c.Purchasing = &PurchasingServiceOp{client: c}
 	c.StockAdjustment = &StockAdjustmentServiceOp{client: c}
 	c.Location = &LocationServiceOp{client: c}
+	c.Supplier = &SupplierServiceOp{client: c}
 
 	return c
 
@@ -59,7 +61,11 @@ func (c *Client) Request(method string, url string, bodyJSON io.Reader, response
 	}
 	*response = bodyBytes
 
-	if res.StatusCode < 200 || res.StatusCode >= 300 {
+	if res.StatusCode == 503 {
+		return fmt.Errorf(`[{"ErrorCode":%v,"Exception":"%v"}]`, res.StatusCode, string(bodyBytes))
+	} else if res.StatusCode >= 400 && res.StatusCode < 500 {
+		return fmt.Errorf(string(bodyBytes))
+	} else if res.StatusCode < 200 || res.StatusCode >= 300 {
 		var errResp map[string]interface{}
 		if err := json.Unmarshal(bodyBytes, &errResp); err != nil {
 			return fmt.Errorf("request failed with status %d: %s", res.StatusCode, string(bodyBytes))

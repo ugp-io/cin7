@@ -49,7 +49,7 @@ type CreateProduct struct {
 	Status                       string                          `json:"Status,omitempty"`                       // Valid values: Active and Deprecated
 	QuantityToProduce            *float64                        `json:"QuantityToProduce,omitempty"`            // Required if BillOfMaterial is true
 	AssemblyCostEstimationMethod *string                         `json:"AssemblyCostEstimationMethod,omitempty"` // Required if BillOfMaterial is true
-	Brand                        *string                         `json:"Brand,omitempty"`
+	Brand                        *string                         `json:"Brand"`
 	DropShipMode                 *string                         `json:"DropShipMode,omitempty"`    // Valid values: No Drop Ship, Optional Drop Ship, Always Drop Ship. Default value is No Drop Ship
 	DefaultLocation              *string                         `json:"DefaultLocation,omitempty"` // Location with this name must exist in reference books under locations
 	Length                       *float64                        `json:"Length,omitempty"`
@@ -116,6 +116,51 @@ type CreateProduct struct {
 	Attachments                  *[]AttachmentLine               `json:"Attachments,omitempty"`
 	CustomPrices                 *[]CustomPrice                  `json:"CustomPrices,omitempty"`
 	// PriceTiers
+}
+
+type CreateProductFamily struct {
+	SKU                  string                  `json:"SKU,omitempty"`
+	Name                 string                  `json:"Name,omitempty"`
+	Category             string                  `json:"Category,omitempty"`
+	CostingMethod        string                  `json:"CostingMethod,omitempty"`
+	DefaultLocation      string                  `json:"DefaultLocation,omitempty"`
+	UOM                  string                  `json:"UOM,omitempty"`
+	Brand                *string                 `json:"Brand,omitempty"`
+	MinimumBeforeReorder *float64                `json:"MinimumBeforeReorder,omitempty"`
+	ReorderQuantity      *float64                `json:"ReorderQuantity,omitempty"`
+	PriceTier1           *float64                `json:"PriceTier1,omitempty"`
+	PriceTier2           *float64                `json:"PriceTier2,omitempty"`
+	PriceTier3           *float64                `json:"PriceTier3,omitempty"`
+	PriceTier4           *float64                `json:"PriceTier4,omitempty"`
+	PriceTier5           *float64                `json:"PriceTier5,omitempty"`
+	PriceTier6           *float64                `json:"PriceTier6,omitempty"`
+	PriceTier7           *float64                `json:"PriceTier7,omitempty"`
+	PriceTier8           *float64                `json:"PriceTier8,omitempty"`
+	PriceTier9           *float64                `json:"PriceTier9,omitempty"`
+	PriceTier10          *float64                `json:"PriceTier10,omitempty"`
+	ShortDescription     *string                 `json:"ShortDescription,omitempty"`
+	Description          *string                 `json:"Description,omitempty"`
+	AttributeSet         *string                 `json:"AttributeSet,omitempty"`
+	DiscountRule         *string                 `json:"DiscountRule,omitempty"`
+	Tags                 *string                 `json:"Tags,omitempty"`
+	COGSAccount          *string                 `json:"COGSAccount,omitempty"`
+	RevenueAccount       *string                 `json:"RevenueAccount,omitempty"`
+	InventoryAccount     *string                 `json:"InventoryAccount,omitempty"`
+	PurchaseTaxRule      *string                 `json:"PurchaseTaxRule,omitempty"`
+	SaleTaxRule          *string                 `json:"SaleTaxRule,omitempty"`
+	DropShipMode         *string                 `json:"DropShipMode,omitempty"`
+	Option1Name          *string                 `json:"Option1Name,omitempty"`
+	Option2Name          *string                 `json:"Option2Name,omitempty"`
+	Option3Name          *string                 `json:"Option3Name,omitempty"`
+	Option1Values        *string                 `json:"Option1Values,omitempty"`
+	Option2Values        *string                 `json:"Option2Values,omitempty"`
+	Option3Values        *string                 `json:"Option3Values,omitempty"`
+	LastModifiedOn       *string                 `json:"LastModifiedOn,omitempty"`
+	HSCode               *string                 `json:"HSCode,omitempty"`
+	CountryOfOrigin      *string                 `json:"CountryOfOrigin,omitempty"`
+	CountryOfOriginCode  *string                 `json:"CountryOfOriginCode,omitempty"`
+	Attachments          *[]AttachmentLine       `json:"Attachments,omitempty"`
+	Products             *[]ProductFamilyProduct `json:"Products,omitempty"`
 }
 
 type CreatePurchase struct {
@@ -378,6 +423,52 @@ type EditProduct struct {
 	// PriceTiers
 }
 
+type EditProductFamily struct {
+	ID                   string                  `json:"ID"`
+	SKU                  *string                 `json:"SKU,omitempty"`
+	Name                 *string                 `json:"Name,omitempty"`
+	Category             *string                 `json:"Category,omitempty"`
+	CostingMethod        *string                 `json:"CostingMethod,omitempty"`
+	DefaultLocation      *string                 `json:"DefaultLocation,omitempty"`
+	UOM                  *string                 `json:"UOM,omitempty"`
+	Brand                *string                 `json:"Brand,omitempty"`
+	MinimumBeforeReorder *float64                `json:"MinimumBeforeReorder,omitempty"`
+	ReorderQuantity      *float64                `json:"ReorderQuantity,omitempty"`
+	PriceTier1           *float64                `json:"PriceTier1,omitempty"`
+	PriceTier2           *float64                `json:"PriceTier2,omitempty"`
+	PriceTier3           *float64                `json:"PriceTier3,omitempty"`
+	PriceTier4           *float64                `json:"PriceTier4,omitempty"`
+	PriceTier5           *float64                `json:"PriceTier5,omitempty"`
+	PriceTier6           *float64                `json:"PriceTier6,omitempty"`
+	PriceTier7           *float64                `json:"PriceTier7,omitempty"`
+	PriceTier8           *float64                `json:"PriceTier8,omitempty"`
+	PriceTier9           *float64                `json:"PriceTier9,omitempty"`
+	PriceTier10          *float64                `json:"PriceTier10,omitempty"`
+	ShortDescription     *string                 `json:"ShortDescription,omitempty"`
+	Description          *string                 `json:"Description,omitempty"`
+	AttributeSet         *string                 `json:"AttributeSet,omitempty"`
+	DiscountRule         *string                 `json:"DiscountRule,omitempty"`
+	Tags                 *string                 `json:"Tags,omitempty"`
+	COGSAccount          *string                 `json:"COGSAccount,omitempty"`
+	RevenueAccount       *string                 `json:"RevenueAccount,omitempty"`
+	InventoryAccount     *string                 `json:"InventoryAccount,omitempty"`
+	PurchaseTaxRule      *string                 `json:"PurchaseTaxRule,omitempty"`
+	SaleTaxRule          *string                 `json:"SaleTaxRule,omitempty"`
+	DropShipMode         *string                 `json:"DropShipMode,omitempty"`
+	Option1Name          *string                 `json:"Option1Name,omitempty"`
+	Option2Name          *string                 `json:"Option2Name,omitempty"`
+	Option3Name          *string                 `json:"Option3Name,omitempty"`
+	Option1Values        *string                 `json:"Option1Values,omitempty"`
+	Option2Values        *string                 `json:"Option2Values,omitempty"`
+	Option3Values        *string                 `json:"Option3Values,omitempty"`
+	LastModifiedOn       *string                 `json:"LastModifiedOn,omitempty"`
+	HSCode               *string                 `json:"HSCode,omitempty"`
+	CountryOfOrigin      *string                 `json:"CountryOfOrigin,omitempty"`
+	CountryOfOriginCode  *string                 `json:"CountryOfOriginCode,omitempty"`
+	Attachments          *[]AttachmentLine       `json:"Attachments,omitempty"`
+	Products             *[]ProductFamilyProduct `json:"Products,omitempty"`
+}
+
 //////////////////////////////////////////
 /*			BROWSE REQUESTS				*/
 //////////////////////////////////////////
@@ -407,6 +498,14 @@ type BrowseProductAvailabilityRequest struct {
 	Location *string
 	Batch    *string
 	Category *string
+}
+
+type BrowseProductFamilyRequest struct {
+	Page  *string
+	Limit *string
+	ID    *string
+	Name  *string
+	Sku   *string
 }
 
 type BrowsePurchaseRequest struct {
@@ -489,6 +588,14 @@ type BrowseStockTransfer struct {
 	Search *string
 }
 
+type BrowseSupplierRequest struct {
+	Page          *string
+	Limit         *string
+	ID            *string
+	Name          *string
+	ModifiedSince *string
+}
+
 //////////////////////////////////////////
 /*			RESPONSE STRUCTS			*/
 //////////////////////////////////////////
@@ -503,6 +610,12 @@ type ProductAvailabilityResponse struct {
 	Total                 *int                   `json:"Total"`
 	Page                  *int                   `json:"Page"`
 	ProductAvailabilities []*ProductAvailability `json:"ProductAvailabilityList"`
+}
+
+type ProductFamilyResponse struct {
+	Total           *int             `json:"Total"`
+	Page            *int             `json:"Page"`
+	ProductFamilies []*ProductFamily `json:"ProductFamilies"`
 }
 
 type PurchaseListResponse struct {
@@ -719,6 +832,12 @@ type LocationResponse struct {
 	Locations []*Location `json:"LocationList"`
 }
 
+type SupplierResponse struct {
+	Total     *int        `json:"Total"`
+	Page      *int        `json:"Page"`
+	Suppliers []*Supplier `json:"SupplierList"`
+}
+
 //////////////////////////////////////////
 /*			OTHER STRUCTS				*/
 //////////////////////////////////////////
@@ -823,6 +942,61 @@ type ProductAvailability struct {
 	OnOrder     *float64     `json:"OnOrder"`
 	StockOnHand *float64     `json:"StockOnHand"`
 	InTransit   *float64     `json:"InTransit"`
+}
+
+type ProductFamily struct {
+	ID                   *string                 `json:"ID"`
+	SKU                  *string                 `json:"SKU"`
+	Name                 *string                 `json:"Name"`
+	Category             *string                 `json:"Category"`
+	Brand                *string                 `json:"Brand"`
+	CostingMethod        *string                 `json:"CostingMethod"`
+	DefaultLocation      *string                 `json:"DefaultLocation"`
+	UOM                  *string                 `json:"UOM"`
+	MinimumBeforeReorder *float64                `json:"MinimumBeforeReorder"`
+	ReorderQuantity      *float64                `json:"ReorderQuantity"`
+	PriceTier1           *float64                `json:"PriceTier1"`
+	PriceTier2           *float64                `json:"PriceTier2"`
+	PriceTier3           *float64                `json:"PriceTier3"`
+	PriceTier4           *float64                `json:"PriceTier4"`
+	PriceTier5           *float64                `json:"PriceTier5"`
+	PriceTier6           *float64                `json:"PriceTier6"`
+	PriceTier7           *float64                `json:"PriceTier7"`
+	PriceTier8           *float64                `json:"PriceTier8"`
+	PriceTier9           *float64                `json:"PriceTier9"`
+	PriceTier10          *float64                `json:"PriceTier10"`
+	ShortDescription     *string                 `json:"ShortDescription"`
+	Description          *string                 `json:"Description"`
+	AttributeSet         *string                 `json:"AttributeSet"`
+	DiscountRule         *string                 `json:"DiscountRule"`
+	Tags                 *string                 `json:"Tags"`
+	COGSAccount          *string                 `json:"COGSAccount"`
+	RevenueAccount       *string                 `json:"RevenueAccount"`
+	InventoryAccount     *string                 `json:"InventoryAccount"`
+	PurchaseTaxRule      *string                 `json:"PurchaseTaxRule"`
+	SaleTaxRule          *string                 `json:"SaleTaxRule"`
+	DropShipMode         *string                 `json:"DropShipMode"`
+	Option1Name          *string                 `json:"Option1Name"`
+	Option2Name          *string                 `json:"Option2Name"`
+	Option3Name          *string                 `json:"Option3Name"`
+	Option1Values        *string                 `json:"Option1Values"`
+	Option2Values        *string                 `json:"Option2Values"`
+	Option3Values        *string                 `json:"Option3Values"`
+	LastModifiedOn       *string                 `json:"LastModifiedOn"`
+	HSCode               *string                 `json:"HSCode"`
+	CountryOfOrigin      *string                 `json:"CountryOfOrigin"`
+	CountryOfOriginCode  *string                 `json:"CountryOfOriginCode"`
+	Attachments          *[]AttachmentLine       `json:"Attachments"`
+	Products             *[]ProductFamilyProduct `json:"Products"`
+}
+
+type ProductFamilyProduct struct {
+	ID      *string `json:"ID"`
+	SKU     *string `json:"SKU"`
+	Name    *string `json:"Name"`
+	Option1 *string `json:"Option1"`
+	Option2 *string `json:"Option2"`
+	Option3 *string `json:"Option3"`
 }
 
 type ProductReorderLevel struct {
@@ -1528,6 +1702,34 @@ type LocationBin struct {
 	Name         *string `json:"Name"`
 	IsDeprecated *bool   `json:"IsDeprecated"`
 	IsStaging    *bool   `json:"IsStaging"`
+}
+
+type Supplier struct {
+	ID             *string  `json:"ID"`
+	Name           *string  `json:"Name"`
+	Currency       *string  `json:"Currency"`
+	PaymentTerm    *string  `json:"PaymentTerm"`
+	AccountPayable *string  `json:"AccountPayable"`
+	TaxRule        *string  `json:"TaxRule"`
+	Status         *string  `json:"Status"`
+	Discount       *float64 `json:"Discount"`
+	Comments       *string  `json:"Comments"`
+	TaxNumber      *string  `json:"TaxNumber"`
+	AttributeSet   *string  `json:"AttributeSet"`
+	LastModifiedOn *string  `json:"LastModifiedOn"`
+	Addresses      *[]SupplierAddress
+}
+
+type SupplierAddress struct {
+	ID             *string `json:"ID"`
+	Line1          *string `json:"Line1"`
+	Line2          *string `json:"Line2"`
+	City           *string `json:"City"`
+	State          *string `json:"State"`
+	Postcode       *string `json:"Postcode"`
+	Country        *string `json:"Country"`
+	Type           *string `json:"Type"`
+	DefaultForType *bool   `json:"DefaultForType"`
 }
 
 type IDName struct {

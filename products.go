@@ -17,6 +17,10 @@ type ProductsService interface {
 	BrowseProductsAvailability(ctx context.Context, req BrowseProductAvailabilityRequest) (*ProductAvailabilityResponse, error)
 	CreateProduct(ctx context.Context, req CreateProduct) (*ProductResponse, error)
 	UpdateProduct(ctx context.Context, req EditProduct) (*ProductResponse, error)
+
+	BrowseProductFamilies(ctx context.Context, req BrowseProductFamilyRequest) (*ProductFamilyResponse, error)
+	UpdateProductFamily(ctx context.Context, req EditProductFamily) (*ProductFamilyResponse, error)
+	CreateProductFamily(ctx context.Context, req CreateProductFamily) (*ProductFamilyResponse, error)
 }
 
 func (s *ProductsServiceOp) BrowseProducts(ctx context.Context, req BrowseProductRequest) (*ProductResponse, error) {
@@ -188,6 +192,97 @@ func (s *ProductsServiceOp) BrowseProductsAvailability(ctx context.Context, req 
 
 	var response ProductAvailabilityResponse
 	err := json.Unmarshal(reqResponse, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
+func (s *ProductsServiceOp) BrowseProductFamilies(ctx context.Context, req BrowseProductFamilyRequest) (*ProductFamilyResponse, error) {
+
+	var reqResponse []byte
+	var urlBuild []string
+
+	if req.ID != nil && *req.ID != "" {
+		urlBuild = append(urlBuild, "ID="+url.QueryEscape(*req.ID))
+	}
+
+	if req.Sku != nil && *req.Sku != "" {
+		urlBuild = append(urlBuild, "Sku="+url.QueryEscape(*req.Sku))
+	}
+
+	if req.Page != nil {
+		urlBuild = append(urlBuild, "Page="+url.QueryEscape(*req.Page))
+	}
+
+	if req.Limit != nil {
+		urlBuild = append(urlBuild, "Limit="+url.QueryEscape(*req.Limit))
+	}
+
+	if req.Name != nil {
+		urlBuild = append(urlBuild, "Name="+url.QueryEscape(*req.Name))
+	}
+
+	productURL := requestURL + `productFamily?` + strings.Join(urlBuild, "&")
+
+	errRequest := s.client.Request("GET", productURL, nil, &reqResponse)
+	if errRequest != nil {
+		return nil, errRequest
+	}
+
+	var response ProductFamilyResponse
+	err := json.Unmarshal(reqResponse, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
+func (s *ProductsServiceOp) CreateProductFamily(ctx context.Context, req CreateProductFamily) (*ProductFamilyResponse, error) {
+
+	var reqResponse []byte
+
+	productURL := requestURL + `productFamily`
+
+	reqBody, err := json.Marshal(req)
+	if err != nil {
+		return nil, err
+	}
+
+	errRequest := s.client.Request("POST", productURL, bytes.NewBuffer(reqBody), &reqResponse)
+	if errRequest != nil {
+		return nil, errRequest
+	}
+
+	var response ProductFamilyResponse
+	err = json.Unmarshal(reqResponse, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
+func (s *ProductsServiceOp) UpdateProductFamily(ctx context.Context, req EditProductFamily) (*ProductFamilyResponse, error) {
+
+	var reqResponse []byte
+
+	productURL := requestURL + `productFamily`
+
+	reqBody, err := json.Marshal(req)
+	if err != nil {
+		return nil, err
+	}
+
+	errRequest := s.client.Request("PUT", productURL, bytes.NewBuffer(reqBody), &reqResponse)
+	if errRequest != nil {
+		return nil, errRequest
+	}
+
+	var response ProductFamilyResponse
+	err = json.Unmarshal(reqResponse, &response)
 	if err != nil {
 		return nil, err
 	}

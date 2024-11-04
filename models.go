@@ -1565,8 +1565,8 @@ type AdditionalFields struct {
 }
 
 type StockLine struct {
-	Quantity             float64      `json:"Quantity,omitempty"`
-	UnitCost             float64      `json:"UnitCost,omitempty"`
+	Quantity             float64      `json:"Quantity"`
+	UnitCost             float64      `json:"UnitCost"`
 	ProductID            *string      `json:"ProductID,omitempty"`
 	SKU                  *string      `json:"SKU,omitempty"`
 	ProductName          *string      `json:"ProductName,omitempty"`

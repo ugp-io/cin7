@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 type Client struct {
@@ -36,6 +38,8 @@ func NewClient(apiKey, apiAccountID string) *Client {
 
 }
 
+var i = 0
+
 func (c *Client) Request(method string, url string, bodyJSON io.Reader, response *[]byte) error {
 
 	httpReq, errNewRequest := http.NewRequest(method, url, bodyJSON)
@@ -61,8 +65,18 @@ func (c *Client) Request(method string, url string, bodyJSON io.Reader, response
 	}
 	*response = bodyBytes
 
+	time.Sleep(exponentialBackoff(i))
 	if res.StatusCode == 503 {
-		return fmt.Errorf(`[{"ErrorCode":%v,"Exception":"%v"}]`, res.StatusCode, string(bodyBytes))
+		fmt.Printf("[{\"ErrorCode\":%v,\"Exception\":\"%v\"}]\n", res.StatusCode, string(bodyBytes))
+		time.Sleep(exponentialBackoff(i))
+		i++
+		if i < 5 {
+			fmt.Println("Retrying request")
+			return c.Request(method, url, bodyJSON, response)
+		} else {
+			i = 0
+			return fmt.Errorf("request failed with status %d: %s", res.StatusCode, string(bodyBytes))
+		}
 	} else if res.StatusCode >= 400 && res.StatusCode < 500 {
 		return fmt.Errorf(string(bodyBytes))
 	} else if res.StatusCode < 200 || res.StatusCode >= 300 {
@@ -74,4 +88,17 @@ func (c *Client) Request(method string, url string, bodyJSON io.Reader, response
 	}
 
 	return nil
+}
+
+func exponentialBackoff(attempt int) time.Duration {
+	baseDelay := time.Second
+	maxDelay := 60 * time.Second
+	delay := baseDelay * (1 << attempt)
+	jitter := time.Duration(rand.Intn(1000)) * time.Millisecond
+	delay = delay + jitter
+	if delay > maxDelay {
+		delay = maxDelay
+	}
+
+	return delay
 }
